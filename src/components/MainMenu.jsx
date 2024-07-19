@@ -1,4 +1,4 @@
-import { NavLink, Routes, Route, Link, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, Link, BrowserRouter } from 'react-router-dom'
 
 const MainMenu = ({ children }) => {
   const currentUrl = window.location.href
@@ -12,16 +12,16 @@ const MainMenu = ({ children }) => {
         <div class="menu_list">
           <ul>
             <li>
-              <NavLink to="logotyper">Логотипер</NavLink>
+              <Link to="logotyper">Логотипер</Link>
             </li>
             <li>
-              <NavLink to="audioconverter">Звукодел</NavLink>
+              <Link to="audioconverter">Звукодел</Link>
             </li>
             <li>
-              <NavLink to="mockuper">Мокапошная</NavLink>
+              <Link to="mockuper">Мокапошная</Link>
             </li>
             <li>
-              <NavLink to="docmaker">Документодел</NavLink>
+              <Link to="docmaker">Документодел</Link>
             </li>
           </ul>
         </div>
