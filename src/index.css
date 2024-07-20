@@ -22,6 +22,10 @@ h1 {
   font-family: Ardeco;
 }
 
+p {
+  font-family: Colus;
+}
+
 .header_menu li,
 footer {
   font-family: Ardeco;
@@ -338,4 +342,22 @@ footer {
   width: 100%;
   height: 100%;
   background: pink;
+}
+
+.test_button {
+  font-family: Colus;
+  width: 30%;
+  height: 10svh;
+  border: 1px solid var(--accent_pink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.logotyper_input {
+  background-color: red;
+  width: max-content;
 }

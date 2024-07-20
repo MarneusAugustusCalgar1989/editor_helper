@@ -1,5 +1,13 @@
+import Wrapper from './Wrapper'
+
 const Mockuper = () => {
-  return <h1>Мокапер!</h1>
+  return (
+    <div className="App">
+      <Wrapper>
+        <h1>Мокапер!</h1>
+      </Wrapper>
+    </div>
+  )
 }
 
 export default Mockuper
