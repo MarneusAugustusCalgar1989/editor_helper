@@ -361,3 +361,18 @@ footer {
   background-color: red;
   width: max-content;
 }
+
+.image_converter_result {
+  width: 80%;
+  max-width: 1920px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image_converter_result img {
+  width: 80%;
+  max-width: 1920px;
+  min-width: 300px;
+}
