@@ -27,7 +27,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<App />} errorElement={<ErrorBoundary />} />
-      <Route path="/logotyper" element={<Logotyper />} action={testAction} />
+      {/* <Route path="/logotyper" element={<Logotyper />} action={testAction} /> */}
+      <Route path="/logotyper" element={<Logotyper />} />
+
       <Route path="/audioconverter" element={<AudioConverter />} />
       <Route path="/mockuper" element={<Mockuper />} />
       <Route path="/documentcreator" element={<DocumentCreator />} />
