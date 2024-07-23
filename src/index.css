@@ -376,3 +376,13 @@ footer {
   max-width: 1920px;
   min-width: 300px;
 }
+
+.modal_window {
+  position: relative;
+  width: 20%;
+  height: 5svh;
+  border: 1px solid red;
+  & > * {
+    position: absolute;
+  }
+}

@@ -1,13 +1,13 @@
-import Wrapper from './Wrapper'
+import Wrapper from '../components/Wrapper';
 
 const Mockuper = () => {
   return (
-    <div className="App">
+    <div className='App'>
       <Wrapper>
         <h1>Мокапер!</h1>
       </Wrapper>
     </div>
-  )
-}
+  );
+};
 
-export default Mockuper
+export default Mockuper;

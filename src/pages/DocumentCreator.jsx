@@ -1,13 +1,13 @@
-import Wrapper from './Wrapper'
+import Wrapper from '../components/Wrapper';
 
 const DocumentCreator = () => {
   return (
-    <div className="App">
+    <div className='App'>
       <Wrapper>
         <h1>Создавалка документов</h1>
       </Wrapper>
     </div>
-  )
-}
+  );
+};
 
-export default DocumentCreator
+export default DocumentCreator;
