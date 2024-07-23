@@ -9,17 +9,18 @@ const AudioConverter = e => {
   const [showInput, setShowInput] = useState(true);
   const [uploadProgress, setUploadProgress] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [inputHandle, setInputHandle] = useState('no-input');
 
   const sendAudio = async e => {
     e.preventDefault();
     setShowInput(false);
     setShowModal(true);
 
-    let filename = e.target.filename.files[0].name;
+    let filename = e.target.files[0].name;
     filename = 'to_' + filename.slice(0, filename.length - 4) + '.mp3';
     setAudioName(filename);
     const formData = new FormData();
-    formData.append('file', e.target.filename.files[0]);
+    formData.append('file', e.target.files[0]);
     const response = await fetch('http://213.59.156.172:3000/convert_audio', {
       method: 'POST',
       body: formData,
@@ -61,7 +62,7 @@ const AudioConverter = e => {
   return (
     <div className='App'>
       <Wrapper>
-        <h1>Audio Converter</h1>
+        <h1 className='module_header'>Audio Converter</h1>
         {showModal && <ModalWindow progress={uploadProgress} />}
         {soundUpload && (
           <>
@@ -83,10 +84,22 @@ const AudioConverter = e => {
           </>
         )}
         {showInput && (
-          <form onSubmit={sendAudio}>
-            <input type='file' name='filename' />
-            <button type='submit'> Отправить аудио </button>
-          </form>
+          <>
+            <div
+              className='image_loader_wrapper'
+              onClick={() => {
+                const input = document.querySelector('form').filename;
+                input.click();
+                setInputHandle('input');
+              }}
+            >
+              <h1>Загрузите аудио</h1>
+            </div>
+            <form style={{ display: 'none' }}>
+              <input type='file' name='filename' onChange={sendAudio} />
+              <button type='submit'> Отправить аудио </button>
+            </form>
+          </>
         )}
       </Wrapper>
     </div>

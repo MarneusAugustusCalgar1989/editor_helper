@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 
 const MainMenu = ({ children }) => {
   const currentUrl = window.location.href;
-  console.log(currentUrl);
   return (
     <main>
       <div className='top_container'>

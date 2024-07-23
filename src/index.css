@@ -394,8 +394,61 @@ footer {
   position: relative;
   width: 20%;
   height: 5svh;
-  border: 1px solid red;
+  border: 1px solid var(--second_bg);
+  border-radius: 10px;
+  text-align: center;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--accent_purple) 99%,
+    transparent
+  );
+  background-size: 4000px;
+
+  animation: modal_window_bg_transition 5s linear infinite;
   & > * {
     position: absolute;
   }
+}
+
+.modal_window::before {
+  content: '';
+  width: 105%;
+  height: 110%;
+  opacity: 1;
+
+  position: absolute;
+  left: -2.5%;
+  top: -5%;
+  border-radius: 10px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--accent_pink) 99%,
+    transparent
+  );
+  background-size: 4000px;
+  filter: blur(2px);
+
+  animation: modal_window_bg_transition 5s linear infinite;
+}
+
+@keyframes modal_window_bg_transition {
+  from {
+    background-position: -200px 0px;
+  }
+  to {
+    background-position: 0px 0px;
+  }
+}
+
+.progress_header {
+  color: var(--accent_pink);
+  padding: 0;
+
+  position: relative;
+}
+
+.progress_bar {
+  height: 100%;
+  background: var(--accent_purple);
+  border-radius: 10px;
 }

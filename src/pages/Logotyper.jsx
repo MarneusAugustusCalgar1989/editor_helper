@@ -67,7 +67,8 @@ const Logotyper = () => {
       <Wrapper>
         <h1 className='module_header'>Logotyper</h1>
         {showModal && <ModalWindow progress={uploadProgress} />}
-        {imgLoaded && (
+        {/* <ModalWindow progress={uploadProgress} /> */}
+        {imgLoaded && !showModal && (
           <>
             <a
               href={imgLoaded}
