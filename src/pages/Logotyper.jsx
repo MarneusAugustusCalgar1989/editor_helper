@@ -63,9 +63,9 @@ const Logotyper = () => {
   };
 
   return (
-    <div className='App'>
+    <div className='App '>
       <Wrapper>
-        <h1>Logotyper</h1>
+        <h1 className='module_header'>Logotyper</h1>
         {showModal && <ModalWindow progress={uploadProgress} />}
         {imgLoaded && (
           <>
@@ -97,9 +97,7 @@ const Logotyper = () => {
                 setInputHandle('input');
               }}
             >
-              <h1 style={{ fontFamily: 'Ardeco', cursor: 'pointer' }}>
-                Загрузите изображение
-              </h1>
+              <h1>Загрузите изображение</h1>
             </div>
 
             <form style={{ display: 'none' }}>

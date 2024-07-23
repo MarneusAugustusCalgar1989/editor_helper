@@ -357,9 +357,21 @@ footer {
   cursor: pointer;
 }
 
-.logotyper_input {
-  background-color: red;
-  width: max-content;
+.module_header {
+  font-family: Colus;
+  color: var(--accent_purple);
+}
+
+.image_loader_wrapper {
+  margin-top: -20svh;
+  padding: 2rem;
+  background: var(--accent_purple);
+  color: var(--main_bg);
+  border-radius: 10px;
+  & > h1 {
+    font-family: Ardeco;
+    cursor: pointer;
+  }
 }
 
 .image_converter_result {
@@ -373,6 +385,7 @@ footer {
 }
 .image_converter_result img {
   width: 60%;
+
   max-width: 1920px;
   min-width: 300px;
 }
