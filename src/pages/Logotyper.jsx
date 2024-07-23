@@ -13,10 +13,14 @@ const Logotyper = () => {
 
   const sendPhoto = async e => {
     e.preventDefault();
+
     setShowModal(true);
-    setImageName('to_' + e.target.filename.files[0].name);
+    setImgLoaded('Started');
+
+    setImageName('to_' + e.target.files[0].name);
+
     const formData = new FormData();
-    formData.append('file', e.target.filename.files[0]);
+    formData.append('file', e.target.files[0]);
 
     const response = await fetch('http://213.59.156.172:3000/add_logo_test', {
       method: 'POST',
@@ -87,7 +91,9 @@ const Logotyper = () => {
             <div
               className='image_loader_wrapper'
               onClick={() => {
-                document.querySelector('form').filename.click();
+                const input = document.querySelector('form').filename;
+                input.click();
+
                 setInputHandle('input');
               }}
             >
@@ -96,8 +102,8 @@ const Logotyper = () => {
               </h1>
             </div>
 
-            <form onSubmit={sendPhoto} style={{ display: 'none' }}>
-              <input type='file' name='filename' />
+            <form style={{ display: 'none' }}>
+              <input type='file' name='filename' onChange={sendPhoto} />
               <button type='submit'> Отправить </button>
             </form>
           </>
