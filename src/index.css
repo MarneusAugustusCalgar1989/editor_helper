@@ -368,9 +368,14 @@ footer {
   background: var(--accent_purple);
   color: var(--main_bg);
   border-radius: 10px;
+  transition: all 0.5s linear;
   & > h1 {
     font-family: Ardeco;
     cursor: pointer;
+  }
+  &:hover {
+    background: var(--accent_pink);
+    color: var(--light_font);
   }
 }
 
@@ -410,12 +415,11 @@ footer {
   }
 }
 
-.modal_window::before {
+.progress_bar::before {
   content: '';
   width: 105%;
   height: 110%;
   opacity: 1;
-
   position: absolute;
   left: -2.5%;
   top: -5%;
@@ -451,4 +455,5 @@ footer {
   height: 100%;
   background: var(--accent_purple);
   border-radius: 10px;
+  z-index: 1;
 }

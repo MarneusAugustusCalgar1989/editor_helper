@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ModalWindow from './ModalWindow';
 
 const MainMenu = ({ children }) => {
   const currentUrl = window.location.href;
