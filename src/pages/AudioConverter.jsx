@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import Wrapper from '../components/Wrapper';
 import { useNavigate } from 'react-router-dom';
+import Wrapper from '../components/Wrapper';
 import ModalWindow from '../components/ModalWindow';
+import AnimatedPage from '../components/AnimatedPage';
+
 const AudioConverter = e => {
   const navigate = useNavigate();
   const [soundUpload, setSoundUpload] = useState();
@@ -62,45 +64,47 @@ const AudioConverter = e => {
   return (
     <div className='App'>
       <Wrapper>
-        <h1 className='module_header'>Audio Converter</h1>
-        {showModal && <ModalWindow progress={uploadProgress} />}
-        {soundUpload && (
-          <>
-            <a
-              href={soundUpload}
-              download={audioName}
-              className='image_converter_result'
-            >
-              <p>Download file</p>
-            </a>
-            <button
-              onClick={() => {
-                setSoundUpload();
-                setShowInput(true);
-              }}
-            >
-              Попробовать еще раз
-            </button>
-          </>
-        )}
-        {showInput && (
-          <>
-            <div
-              className='image_loader_wrapper'
-              onClick={() => {
-                const input = document.querySelector('form').filename;
-                input.click();
-                setInputHandle('input');
-              }}
-            >
-              <h1>Загрузите аудио</h1>
-            </div>
-            <form style={{ display: 'none' }}>
-              <input type='file' name='filename' onChange={sendAudio} />
-              <button type='submit'> Отправить аудио </button>
-            </form>
-          </>
-        )}
+        <AnimatedPage>
+          <h1 className='module_header'>Audio Converter</h1>
+          {showModal && <ModalWindow progress={uploadProgress} />}
+          {soundUpload && (
+            <>
+              <a
+                href={soundUpload}
+                download={audioName}
+                className='image_converter_result'
+              >
+                <p>Download file</p>
+              </a>
+              <button
+                onClick={() => {
+                  setSoundUpload();
+                  setShowInput(true);
+                }}
+              >
+                Попробовать еще раз
+              </button>
+            </>
+          )}
+          {showInput && (
+            <>
+              <div
+                className='image_loader_wrapper'
+                onClick={() => {
+                  const input = document.querySelector('form').filename;
+                  input.click();
+                  setInputHandle('input');
+                }}
+              >
+                <h1>Загрузите аудио</h1>
+              </div>
+              <form style={{ display: 'none' }}>
+                <input type='file' name='filename' onChange={sendAudio} />
+                <button type='submit'> Отправить аудио </button>
+              </form>
+            </>
+          )}
+        </AnimatedPage>
       </Wrapper>
     </div>
   );

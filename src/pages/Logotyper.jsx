@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Wrapper from '../components/Wrapper';
 import { useState } from 'react';
 import ModalWindow from '../components/ModalWindow';
+import AnimatedPage from '../components/AnimatedPage';
 
 const Logotyper = () => {
   const navigate = useNavigate();
@@ -65,48 +66,50 @@ const Logotyper = () => {
   return (
     <div className='App '>
       <Wrapper>
-        <h1 className='module_header'>Logotyper</h1>
-        {showModal && <ModalWindow progress={uploadProgress} />}
-        {/* <ModalWindow progress={uploadProgress} /> */}
-        {imgLoaded && !showModal && (
-          <>
-            <a
-              href={imgLoaded}
-              download={imageName}
-              className='image_converter_result'
-              target='blank'
-            >
-              <img src={imgLoaded} alt='' />
-            </a>
-            <button
-              onClick={() => {
-                setImgLoaded();
-              }}
-            >
-              Попробовать еще раз
-            </button>
-          </>
-        )}
-        {!imgLoaded && (
-          <>
-            <div
-              className='image_loader_wrapper'
-              onClick={() => {
-                const input = document.querySelector('form').filename;
-                input.click();
+        <AnimatedPage>
+          <h1 className='module_header'>Logotyper</h1>
+          {showModal && <ModalWindow progress={uploadProgress} />}
+          {/* <ModalWindow progress={uploadProgress} /> */}
+          {imgLoaded && !showModal && (
+            <>
+              <a
+                href={imgLoaded}
+                download={imageName}
+                className='image_converter_result'
+                target='blank'
+              >
+                <img src={imgLoaded} alt='' />
+              </a>
+              <button
+                onClick={() => {
+                  setImgLoaded();
+                }}
+              >
+                Попробовать еще раз
+              </button>
+            </>
+          )}
+          {!imgLoaded && (
+            <>
+              <div
+                className='image_loader_wrapper'
+                onClick={() => {
+                  const input = document.querySelector('form').filename;
+                  input.click();
 
-                setInputHandle('input');
-              }}
-            >
-              <h1>Загрузите изображение</h1>
-            </div>
+                  setInputHandle('input');
+                }}
+              >
+                <h1>Загрузите изображение</h1>
+              </div>
 
-            <form style={{ display: 'none' }}>
-              <input type='file' name='filename' onChange={sendPhoto} />
-              <button type='submit'> Отправить </button>
-            </form>
-          </>
-        )}
+              <form style={{ display: 'none' }}>
+                <input type='file' name='filename' onChange={sendPhoto} />
+                <button type='submit'> Отправить </button>
+              </form>
+            </>
+          )}
+        </AnimatedPage>
       </Wrapper>
     </div>
   );

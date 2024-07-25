@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ModalWindow from './ModalWindow';
+import AnimatedPage from './AnimatedPage';
 
 const MainMenu = ({ children }) => {
   const currentUrl = window.location.href;
@@ -27,32 +27,34 @@ const MainMenu = ({ children }) => {
   };
 
   return (
-    <main>
-      <div className='top_container'>
-        <div className='container'>
-          <h1 className='main_header_top'>ВСПОМОГАТОР</h1>
+    <AnimatedPage>
+      <main>
+        <div className='top_container'>
+          <div className='container'>
+            <h1 className='main_header_top'>ВСПОМОГАТОР</h1>
+          </div>
+          <div className='menu_list'>
+            {serviceON ? (
+              <ul>
+                <li>
+                  <Link to='logotyper'>Логотипер</Link>
+                </li>
+                <li>
+                  <Link to='audioconverter'>Звукодел</Link>
+                </li>
+              </ul>
+            ) : (
+              <ul onClick={reloadWind}>
+                <li>Сервис временно недоступен</li>
+              </ul>
+            )}
+          </div>
+          <div className='container'>
+            <h1 className='main_header_bottom'>ВСПОМОГАТОР</h1>
+          </div>
         </div>
-        <div className='menu_list'>
-          {serviceON ? (
-            <ul>
-              <li>
-                <Link to='logotyper'>Логотипер</Link>
-              </li>
-              <li>
-                <Link to='audioconverter'>Звукодел</Link>
-              </li>
-            </ul>
-          ) : (
-            <ul onClick={reloadWind}>
-              <li>Сервис временно недоступен</li>
-            </ul>
-          )}
-        </div>
-        <div className='container'>
-          <h1 className='main_header_bottom'>ВСПОМОГАТОР</h1>
-        </div>
-      </div>
-    </main>
+      </main>
+    </AnimatedPage>
   );
 };
 

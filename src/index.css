@@ -360,15 +360,27 @@ footer {
 .module_header {
   font-family: Colus;
   color: var(--accent_purple);
+  margin-bottom: 2rem;
+}
+
+.animation_layer {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* height: 90svh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .image_loader_wrapper {
-  margin-top: -20svh;
+  /* margin-top: -20svh; */
   padding: 2rem;
   background: var(--accent_purple);
   color: var(--main_bg);
   border-radius: 10px;
-  transition: all 0.5s linear;
+  transition: all 0.3s linear;
   & > h1 {
     font-family: Ardeco;
     cursor: pointer;
