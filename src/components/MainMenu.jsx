@@ -1,46 +1,47 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import AnimatedPage from './AnimatedPage';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import AnimatedPage from './AnimatedPage'
+import { AnimatePresence } from 'framer-motion'
 
 const MainMenu = ({ children }) => {
-  const currentUrl = window.location.href;
-  const [serviceON, setServiceOn] = useState(false);
-  const navigate = useNavigate();
+  const currentUrl = window.location.href
+  const [serviceON, setServiceOn] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const testFetch = async () => {
       try {
         await fetch('http://213.59.156.172:3000/cleaner_for_img', {
           method: 'POST',
-        }).then(data => (data ? setServiceOn(true) : setServiceOn(false)));
+        }).then((data) => (data ? setServiceOn(true) : setServiceOn(false)))
       } catch (e) {
-        console.log(e.text);
+        console.log(e.text)
       } finally {
-        console.log('Fetched');
+        console.log('Fetched')
       }
-    };
+    }
 
-    testFetch();
-  }, []);
+    testFetch()
+  }, [])
   const reloadWind = () => {
-    window.location.reload();
-  };
+    window.location.reload()
+  }
 
   return (
     <AnimatedPage>
       <main>
-        <div className='top_container'>
-          <div className='container'>
-            <h1 className='main_header_top'>ВСПОМОГАТОР</h1>
+        <div className="top_container">
+          <div className="container">
+            <h1 className="main_header_top">ВСПОМОГАТОР</h1>
           </div>
-          <div className='menu_list'>
+          <div className="menu_list">
             {serviceON ? (
               <ul>
                 <li>
-                  <Link to='logotyper'>Логотипер</Link>
+                  <Link to="logotyper">Логотипер</Link>
                 </li>
                 <li>
-                  <Link to='audioconverter'>Звукодел</Link>
+                  <Link to="audioconverter">Звукодел</Link>
                 </li>
               </ul>
             ) : (
@@ -49,13 +50,13 @@ const MainMenu = ({ children }) => {
               </ul>
             )}
           </div>
-          <div className='container'>
-            <h1 className='main_header_bottom'>ВСПОМОГАТОР</h1>
+          <div className="container">
+            <h1 className="main_header_bottom">ВСПОМОГАТОР</h1>
           </div>
         </div>
       </main>
     </AnimatedPage>
-  );
-};
+  )
+}
 
-export default MainMenu;
+export default MainMenu

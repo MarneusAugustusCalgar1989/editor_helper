@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import AnimatedPage from './AnimatedPage'
 
 const Wrapper = ({ children }) => {
   return (
@@ -9,8 +10,12 @@ const Wrapper = ({ children }) => {
         </div>
 
         <div className="header_auth">
-          <div className="header_sign_in">Sign in</div>
-          <div className="header_log_in">Log in</div>
+          <div className="header_sign_in">
+            <NavLink to="/signup">Sign in</NavLink>
+          </div>
+          <div className="header_log_in">
+            <NavLink to="/login">Log in</NavLink>
+          </div>
         </div>
       </header>
       {children}
