@@ -469,3 +469,7 @@ footer {
   border-radius: 10px;
   z-index: 1;
 }
+
+.active {
+  color: var(--accent_pink) !important;
+}

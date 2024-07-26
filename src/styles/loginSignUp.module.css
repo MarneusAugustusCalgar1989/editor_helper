@@ -1,0 +1,38 @@
+.sing_in_wrapper {
+  width: 50%;
+  max-width: 500px;
+  min-width: 250px;
+  min-height: 40svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid var(--accent_pink);
+  border-radius: 10px;
+}
+
+.module_header {
+  font-family: Colus;
+  color: var(--accent_purple);
+}
+
+.login_form {
+  display: flex;
+  width: 80%;
+  min-height: 50%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  border: 1px solid red;
+}
+
+button {
+  padding: 0.5rem;
+}
+
+.server_answer {
+  font-family: Ardeco;
+  color: var(--light_font);
+}

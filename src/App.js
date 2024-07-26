@@ -1,17 +1,15 @@
-import { AnimatePresence } from 'framer-motion'
-import './App.css'
-import MainMenu from './components/MainMenu'
-import Wrapper from './components/Wrapper'
-import { useLocation } from 'react-router-dom'
+import './App.css';
+import MainMenu from './components/MainMenu';
+import Wrapper from './components/Wrapper';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Wrapper>
         <MainMenu />
       </Wrapper>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
