@@ -14,7 +14,8 @@ import Mockuper from './pages/Mockuper';
 import AudioConverter from './pages/AudioConverter';
 import DocumentCreator from './pages/DocumentCreator';
 import ErrorPage from './components/ErrorPage';
-import LogInSignUp from './components/LogInSignUp';
+import LoginWindow from './components/LoginWindow';
+import SignUpWindow from './components/SignUpWindow';
 
 function ErrorBoundary() {
   let error = useRouteError();
@@ -30,8 +31,8 @@ const router = createBrowserRouter(
       <Route path='/audioconverter' element={<AudioConverter />} />
       <Route path='/mockuper' element={<Mockuper />} />
       <Route path='/documentcreator' element={<DocumentCreator />} />
-      <Route path='/login' element={<LogInSignUp incomingType='login' />} />
-      <Route path='/signup' element={<LogInSignUp incomingType='signup' />} />
+      <Route path='/login' element={<LoginWindow incomingType='login' />} />
+      <Route path='/signup' element={<SignUpWindow incomingType='signup' />} />
     </>
   )
 );
