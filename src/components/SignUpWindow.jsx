@@ -26,6 +26,12 @@ const SignUpWindow = () => {
       .then((text) => setServAnswer(text))
   }
 
+  const jwtTest = async () => {
+    await fetch('http://213.59.156.172:3000/', { method: 'GET' }).then((data) =>
+      console.log(data)
+    )
+  }
+
   return (
     <div className="App">
       <Wrapper>
@@ -40,6 +46,7 @@ const SignUpWindow = () => {
           <button
             onClick={() => {
               setShowUser(!showUser)
+              jwtTest()
             }}
           >
             Показать список пользователей
