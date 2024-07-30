@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useBeforeUnload } from 'react-router-dom';
 import AnimatedPage from './AnimatedPage';
+import { useAuth } from '../hooks/useAuth';
 
 const MainMenu = ({ children }) => {
   const [serviceON, setServiceOn] = useState(false);
@@ -24,6 +25,10 @@ const MainMenu = ({ children }) => {
     window.location.reload();
   };
 
+  const context = useAuth();
+  useBeforeUnload(() => {
+    alert('!!!');
+  });
   return (
     <AnimatedPage>
       <main>
@@ -40,6 +45,11 @@ const MainMenu = ({ children }) => {
                 <li>
                   <Link to='audioconverter'>Звукодел</Link>
                 </li>
+                {context.user && (
+                  <li>
+                    <Link to='documentcreator'>Документодел</Link>
+                  </li>
+                )}
               </ul>
             ) : (
               <ul onClick={reloadWind}>
