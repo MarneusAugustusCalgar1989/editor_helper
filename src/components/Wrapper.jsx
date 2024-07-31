@@ -1,39 +1,39 @@
-import { NavLink } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { NavLink } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const Wrapper = ({ children }) => {
-  const context = useAuth();
+  const context = useAuth()
   return (
     <>
       <header>
-        <div className='header_logo'>
-          <NavLink to='/'>HOME</NavLink>
+        <div className="header_logo">
+          <NavLink to="/">HOME</NavLink>
         </div>
 
-        <div className='header_auth'>
+        <div className="header_auth">
           {!context.user ? (
             <>
-              <div className='header_sign_in'>
-                <NavLink to='/signup'>Sign in</NavLink>
+              <div className="header_sign_in">
+                <NavLink to="/signup">Sign in</NavLink>
               </div>
-              <div className='header_log_in'>
-                <NavLink to='/login'>Log in</NavLink>
+              <div className="header_log_in">
+                <NavLink to="/login">Log in</NavLink>
               </div>
             </>
           ) : (
             <>
-              <div className='header_sign_in'>
+              <div className="header_sign_in">
                 <NavLink
-                  to='/login'
+                  to="/login"
                   onClick={() => {
-                    context.user = '';
+                    context.user = ''
                   }}
                 >
                   Log Out
                 </NavLink>
               </div>
-              <div className='header_sign_in'>
-                <NavLink to='/profile'>{context.username}</NavLink>
+              <div className="header_sign_in">
+                <NavLink to="/profile">{context.username}</NavLink>
               </div>
             </>
           )}
@@ -44,7 +44,7 @@ const Wrapper = ({ children }) => {
         <p>{context?.username || 'some footer'}</p>
       </footer>
     </>
-  );
-};
+  )
+}
 
-export default Wrapper;
+export default Wrapper
