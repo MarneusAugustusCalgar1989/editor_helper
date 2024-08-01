@@ -75,7 +75,6 @@ const Logotyper = () => {
         <AnimatedPage>
           <h1 className="module_header">Logotyper</h1>
           {showModal && <ModalWindow progress={uploadProgress} />}
-          {/* <ModalWindow progress={uploadProgress} /> */}
           {imgLoaded && !showModal && (
             <>
               <a

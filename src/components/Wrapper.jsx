@@ -27,6 +27,7 @@ const Wrapper = ({ children }) => {
                   to="/login"
                   onClick={() => {
                     context.user = ''
+                    context.username = ''
                   }}
                 >
                   Log Out

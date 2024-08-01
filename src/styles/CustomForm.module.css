@@ -1,0 +1,19 @@
+.login_form {
+  display: flex;
+  width: 80%;
+  min-height: 50%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  border: 1px solid red;
+}
+
+button {
+  padding: 0.5rem;
+}
+
+.module_second_header {
+  font-family: Ardeco;
+  color: var(--accent_pink);
+}

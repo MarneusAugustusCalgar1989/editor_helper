@@ -1,69 +1,76 @@
-import { useState, useEffect } from 'react';
-import { Link, useBeforeUnload } from 'react-router-dom';
-import AnimatedPage from './AnimatedPage';
-import { useAuth } from '../hooks/useAuth';
+import { useState, useEffect } from 'react'
+import { Link, useBeforeUnload } from 'react-router-dom'
+import AnimatedPage from './AnimatedPage'
+import { useAuth } from '../hooks/useAuth'
 
 const MainMenu = ({ children }) => {
-  const [serviceON, setServiceOn] = useState(false);
+  const context = useAuth()
+  const [serviceON, setServiceOn] = useState(false)
 
   useEffect(() => {
     const testFetch = async () => {
       try {
-        await fetch('http://213.59.156.172:3000/cleaner_for_img', {
+        await fetch('http://213.59.156.172:3000/', {
           method: 'POST',
-        }).then(data => (data ? setServiceOn(true) : setServiceOn(false)));
+          body: context?.user || 'default-token',
+        }).then((data) => (data ? setServiceOn(true) : setServiceOn(false)))
       } catch (e) {
-        console.log(e.text);
+        console.log(e.text)
       } finally {
-        console.log('Fetched');
+        console.log('Fetched')
       }
-    };
+    }
 
-    testFetch();
-  }, []);
+    testFetch()
+  }, [])
   const reloadWind = () => {
-    window.location.reload();
-  };
+    window.location.reload()
+  }
 
-  const context = useAuth();
-  useBeforeUnload(() => {
-    alert('!!!');
-  });
   return (
     <AnimatedPage>
       <main>
-        <div className='top_container'>
-          <div className='container'>
-            <h1 className='main_header_top'>ВСПОМОГАТОР</h1>
+        <div className="top_container">
+          <div className="container">
+            <h1 className="main_header_top">ВСПОМОГАТОР</h1>
           </div>
-          <div className='menu_list'>
-            {serviceON ? (
+          <div className="menu_list">
+            {!serviceON && (
+              <ul>
+                <li onClick={() => reloadWind()}>Сервис временно недоступен</li>
+              </ul>
+            )}
+
+            {serviceON && !context.user && (
               <ul>
                 <li>
-                  <Link to='logotyper'>Логотипер</Link>
+                  <Link to="login">Нужно зарегистрироваться</Link>
+                </li>
+              </ul>
+            )}
+
+            {serviceON && context.user && (
+              <ul>
+                <li>
+                  <Link to="logotyper">Логотипер</Link>
                 </li>
                 <li>
-                  <Link to='audioconverter'>Звукодел</Link>
+                  <Link to="audioconverter">Звукодел</Link>
                 </li>
-                {context.user && (
-                  <li>
-                    <Link to='documentcreator'>Документодел</Link>
-                  </li>
-                )}
-              </ul>
-            ) : (
-              <ul onClick={reloadWind}>
-                <li>Сервис временно недоступен</li>
+
+                <li>
+                  <Link to="documentcreator">Документодел</Link>
+                </li>
               </ul>
             )}
           </div>
-          <div className='container'>
-            <h1 className='main_header_bottom'>ВСПОМОГАТОР</h1>
+          <div className="container">
+            <h1 className="main_header_bottom">ВСПОМОГАТОР</h1>
           </div>
         </div>
       </main>
     </AnimatedPage>
-  );
-};
+  )
+}
 
-export default MainMenu;
+export default MainMenu
