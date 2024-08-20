@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AnimatedPage from './AnimatedPage';
 import CustomForm from './form/CustomForm';
-import { formConfig, initState } from './form/formConfig';
+import { signUpConfig, initState } from './form/formConfig';
 
 const SignUpWindow = () => {
   const [servAnswer, setServAnswer] = useState('');
@@ -13,35 +13,32 @@ const SignUpWindow = () => {
   const context = useAuth();
   const navigate = useNavigate();
   const [formState, setFormState] = useState(initState);
+  const [showSendButton, setShowSendButton] = useState(false);
 
   const formChange = e => {
     const value = e.target.value;
     const name = e.target.name;
-    setFormState(prev => ({ ...prev, [name]: value }));
-  };
-
-  const sendTest = e => {
-    e.preventDefault();
-    if (formState.password === formState.duplicate) {
-      console.log('Passwords equals');
-      console.log('Send data');
-    } else {
-      console.log('Passwords not equal');
-      console.log('Set error');
+    if (!/[^a-zA-Z0-9А-Яа-яЁё]/.test(value) || name === 'email') {
+      setFormState(prev => ({ ...prev, [name]: value }));
     }
 
-    console.log(formState);
+    if (
+      formState.password === formState.duplicate &&
+      formState.name !== '' &&
+      formState.password !== ''
+    ) {
+      setShowSendButton(false);
+    } else {
+      setShowSendButton(true);
+    }
   };
 
   const sendForm = async e => {
     e.preventDefault();
     const user = {};
-    user.username = e.target.parentNode.username.value;
-    user.password = e.target.parentNode.password.value;
+    user.username = formState.name;
+    user.password = formState.password;
     console.log(JSON.stringify(user));
-
-    e.target.parentNode.username.value = '';
-    e.target.parentNode.password.value = '';
 
     await fetch('http://213.59.156.172:3000/singingin', {
       method: 'POST',
@@ -63,6 +60,7 @@ const SignUpWindow = () => {
       .then(text => {
         context.user = text;
         context.username = user.username;
+        localStorage.setItem('x-token', text);
       });
   };
 
@@ -73,19 +71,20 @@ const SignUpWindow = () => {
           {!servAnswer ? (
             <div className={styles.sing_in_wrapper}>
               <h1 className={styles.module_header}>Sign In</h1>
-              <p>Здесь должна быть форма</p>
 
-              <form className='form_container' onSubmit={sendTest}>
-                {formConfig.map(item => (
+              <form className='form_container' onSubmit={sendForm}>
+                {signUpConfig.map(item => (
                   <CustomForm
-                    key={item.key}
+                    key={item.name}
                     {...item}
                     value={formState[item.name]}
                     onChange={formChange}
                     error={item.validate?.(formState)}
                   />
                 ))}
-                <button className='form_button'>Registration</button>
+                {showSendButton && (
+                  <button className='form_button'>Registration</button>
+                )}
               </form>
             </div>
           ) : (

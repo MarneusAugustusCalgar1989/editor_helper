@@ -1,10 +1,16 @@
-export const formConfig = [
+export const signUpConfig = [
   {
     name: 'name',
     placeholder: 'Enter your name',
     required: true,
+    maxLength: 15,
   },
-  { name: 'surname', placeholder: 'Enter your surname', required: true },
+  {
+    name: 'surname',
+    placeholder: 'Enter your surname',
+    required: true,
+    maxLength: 15,
+  },
   {
     name: 'email',
     placeholder: 'Enter your e-mail',
@@ -37,4 +43,28 @@ export const initState = {
   password: '',
   duplicate: '',
   email: '',
+};
+
+export const loginFormConfig = [
+  {
+    name: 'login',
+    placeholder: 'Enter your login',
+    required: true,
+    type: 'text',
+    errorMessage: 'Some trouble with login',
+    minLength: 5,
+  },
+  {
+    name: 'password',
+    placeholder: 'Enter your password',
+    required: true,
+    type: 'password',
+    errorMessage: 'Something wrong with password',
+    minLength: 5,
+  },
+];
+
+export const loginInitState = {
+  login: '',
+  password: '',
 };
