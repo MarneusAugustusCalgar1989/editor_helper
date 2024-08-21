@@ -1,0 +1,94 @@
+@media print {
+  body {
+    margin: 0 !important;
+  }
+}
+
+@font-face {
+  font-family: 'Fira-Sans-Regular';
+  src: url('../../public/fonts/FiraSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Fira-Sans-Black';
+  src: url('../../public/fonts/FiraSans-Black.ttf');
+}
+
+.main-container {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ck-content {
+  font-family: Fira-Sans-Regular;
+  line-height: 1.6;
+  word-break: break-word;
+  min-height: 50svh;
+}
+
+.ck-content h1,
+h2 {
+  font-family: Fira-Sans-Black;
+}
+
+.ck-content p {
+  font-family: Fira-Sans-Regular;
+}
+
+#ck-editor__aria-label_e48b938b9f219e8f758bebd62b3d4f4cc {
+  font-family: Colus;
+}
+
+#root
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.ck.ck-reset.ck-editor.ck-rounded-corners
+  > div.ck.ck-editor__top.ck-reset_all
+  > div
+  > div.ck.ck-sticky-panel__content
+  > div
+  > div.ck.ck-toolbar__items
+  > div.ck.ck-dropdown.ck-heading-dropdown
+  > button
+  > span {
+  font-family: Colus;
+}
+
+#root
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.ck.ck-reset.ck-editor.ck-rounded-corners
+  > div.ck.ck-editor__top.ck-reset_all
+  > div
+  > div.ck.ck-sticky-panel__content
+  > div
+  * {
+  color: var(--accent_pink);
+}
+
+#root
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.ck.ck-reset.ck-editor.ck-rounded-corners
+  > div.ck.ck-editor__main
+  > div:focus {
+  border: 1px solid var(--accent_pink);
+}
+
+.editor-container_classic-editor .editor-container__editor {
+  min-width: 795px;
+  max-width: 795px;
+}

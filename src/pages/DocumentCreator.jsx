@@ -1,3 +1,4 @@
+import DocumentEditor from '../components/DocumentEditor';
 import Wrapper from '../components/Wrapper';
 
 const DocumentCreator = () => {
@@ -5,6 +6,7 @@ const DocumentCreator = () => {
     <div className='App'>
       <Wrapper>
         <h1>Создавалка документов</h1>
+        <DocumentEditor />
       </Wrapper>
     </div>
   );
