@@ -33,7 +33,6 @@ const LoginWindow = () => {
     const user = {};
     user.username = formState.login;
     user.password = formState.password;
-    console.log(JSON.stringify(user));
 
     formState.login = '';
     formState.password = '';
@@ -69,7 +68,7 @@ const LoginWindow = () => {
               <p className={styles.module_second_header}>{servAnswer}</p>
             )}
 
-            {servAnswer === 'Try again later' || !context.user ? (
+            {!context.user ? (
               <form className='form_container' onSubmit={sendForm}>
                 {loginFormConfig.map(item => (
                   <CustomForm
@@ -91,7 +90,7 @@ const LoginWindow = () => {
                     navigate('/');
                   }}
                 >
-                  {username}
+                  {context.username}
                 </span>
                 !
               </h1>

@@ -5,10 +5,6 @@ import { useAuth } from '../hooks/useAuth';
 
 const MainMenu = ({ children }) => {
   const context = useAuth();
-  if (localStorage.getItem('x-token')) {
-    context.user = localStorage.getItem('x-token');
-    context.username = localStorage.getItem('username');
-  }
 
   const [serviceON, setServiceOn] = useState(false);
 
@@ -28,9 +24,6 @@ const MainMenu = ({ children }) => {
 
     testFetch();
   }, []);
-  const reloadWind = () => {
-    window.location.reload();
-  };
 
   return (
     <AnimatedPage>
@@ -42,7 +35,9 @@ const MainMenu = ({ children }) => {
           <div className='menu_list'>
             {!serviceON && (
               <ul>
-                <li onClick={() => reloadWind()}>Сервис временно недоступен</li>
+                <li onClick={() => window.location.reload()}>
+                  Сервис временно недоступен
+                </li>
               </ul>
             )}
 

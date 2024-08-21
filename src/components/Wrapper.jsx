@@ -3,10 +3,6 @@ import { useAuth } from '../hooks/useAuth';
 
 const Wrapper = ({ children }) => {
   const context = useAuth();
-  if (localStorage.getItem('x-token')) {
-    context.user = localStorage.getItem('x-token');
-    context.username = localStorage.getItem('username');
-  }
 
   return (
     <>
