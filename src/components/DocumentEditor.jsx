@@ -57,7 +57,7 @@ export default function DocumentEditor() {
   const ckeref = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
   const context = useAuth();
-  const [editorState, setEditorState] = useState(null);
+  const [editorState, setEditorState] = useState({ type: '', requestText: '' });
 
   useEffect(() => {
     setIsLayoutReady(true);
@@ -236,7 +236,15 @@ export default function DocumentEditor() {
   };
 
   const changeEditor = e => {
-    setEditorState(ckeref.current.watchdog._editor.data.get());
+    // setEditorState(ckeref.current.watchdog._editor.data.get());
+    setEditorState({
+      ...editorState,
+      requestText: ckeref.current.watchdog._editor.data.get(),
+    });
+  };
+
+  const setRequestType = e => {
+    setEditorState({ ...editorState, type: e.target.textContent });
   };
 
   const sendEditorForm = () => {
@@ -244,7 +252,32 @@ export default function DocumentEditor() {
   };
 
   return (
-    <div>
+    <div className='form_container'>
+      <div className='variant_chooser'>
+        <ul>
+          <li
+            onClick={e => {
+              setRequestType(e);
+            }}
+          >
+            Запрос
+          </li>
+          <li
+            onClick={e => {
+              setRequestType(e);
+            }}
+          >
+            Письмо поддержки
+          </li>
+          <li
+            onClick={e => {
+              setRequestType(e);
+            }}
+          >
+            Свободная форма
+          </li>
+        </ul>
+      </div>
       <div className='main-container'>
         <div
           className='editor-container editor-container_classic-editor'
