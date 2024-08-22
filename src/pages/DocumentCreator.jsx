@@ -5,7 +5,7 @@ const DocumentCreator = () => {
   return (
     <div className='App'>
       <Wrapper>
-        <h1>Создавалка документов</h1>
+        <h1>Документодел</h1>
         <DocumentEditor />
       </Wrapper>
     </div>

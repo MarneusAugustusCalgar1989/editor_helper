@@ -49,7 +49,6 @@ import {
 import 'ckeditor5/ckeditor5.css';
 
 import '../styles/documentEditor.css';
-import { type } from '@testing-library/user-event/dist/type';
 
 export default function DocumentEditor() {
   const editorContainerRef = useRef(null);
@@ -57,7 +56,16 @@ export default function DocumentEditor() {
   const ckeref = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
   const context = useAuth();
-  const [editorState, setEditorState] = useState({ type: '', requestText: '' });
+  const [editorState, setEditorState] = useState({
+    type: '', // Тип запроса, он же заголовок
+    adress: '', // получатель запроса
+    regal: '', // запрашиваем печати и подписи
+    fromWho: '', // сущность, от которой будет исходить запрос
+    requestText: '', // текст
+    user: context.user, // токен
+  });
+
+  const [reqeustConfirmed, setRequestConfirmed] = useState(false);
 
   useEffect(() => {
     setIsLayoutReady(true);
@@ -236,7 +244,6 @@ export default function DocumentEditor() {
   };
 
   const changeEditor = e => {
-    // setEditorState(ckeref.current.watchdog._editor.data.get());
     setEditorState({
       ...editorState,
       requestText: ckeref.current.watchdog._editor.data.get(),
@@ -244,64 +251,126 @@ export default function DocumentEditor() {
   };
 
   const setRequestType = e => {
-    setEditorState({ ...editorState, type: e.target.textContent });
+    setEditorState({
+      ...editorState,
+      [e.target.dataset.name]: e.target.textContent,
+    });
+    document.querySelectorAll('li').forEach(el => {
+      if (el.classList.value.includes('active_chose')) {
+        el.classList.remove('active_chose');
+      }
+    });
+    e.target.classList.add('active_chose');
   };
 
-  const sendEditorForm = () => {
+  const freeFromInput = e => {
+    setEditorState({ ...editorState, [e.target.name]: e.target.value });
+    document.querySelectorAll('li').forEach(el => {
+      if (el.classList.value.includes('active_chose')) {
+        el.classList.remove('active_chose');
+      }
+    });
+  };
+
+  const inputFocused = e => {
+    e.target.value !== ''
+      ? setEditorState({ ...editorState, type: e.target.value })
+      : setEditorState(editorState);
+  };
+
+  const sendEditorForm = async e => {
     console.log(editorState);
+
+    await fetch('http://213.59.156.172:3000/send_document_data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editorState),
+    }).then(data =>
+      data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
+    );
   };
 
   return (
-    <div className='form_container'>
-      <div className='variant_chooser'>
-        <ul>
-          <li
-            onClick={e => {
-              setRequestType(e);
-            }}
-          >
-            Запрос
-          </li>
-          <li
-            onClick={e => {
-              setRequestType(e);
-            }}
-          >
-            Письмо поддержки
-          </li>
-          <li
-            onClick={e => {
-              setRequestType(e);
-            }}
-          >
-            Свободная форма
-          </li>
-        </ul>
-      </div>
-      <div className='main-container'>
+    <>
+      {reqeustConfirmed && (
         <div
-          className='editor-container editor-container_classic-editor'
-          ref={editorContainerRef}
+          className='request_recieved'
+          onClick={() => {
+            setRequestConfirmed(false);
+          }}
         >
-          <div className='editor-container__editor'>
-            <div ref={editorRef}>
-              {isLayoutReady && (
-                <>
-                  <CKEditor
-                    editor={ClassicEditor}
-                    config={editorConfig}
-                    ref={ckeref}
-                    onChange={changeEditor}
-                  />
-                  {editorState && (
-                    <button onClick={sendEditorForm}>Отправить текст</button>
+          <h1>Запрос получен</h1>
+          <p>Отправить другой запрос?</p>
+        </div>
+      )}
+      {!reqeustConfirmed && (
+        <div className='form_container'>
+          <div className='variant_chooser'>
+            <ul>
+              <li
+                data-name='type'
+                onClick={e => {
+                  setRequestType(e);
+                }}
+              >
+                Запрос информации
+              </li>
+              <li
+                data-name='type'
+                onClick={e => {
+                  setRequestType(e);
+                }}
+              >
+                Письмо поддержки
+              </li>
+            </ul>
+          </div>
+          <div className='free_form_input'>
+            <input
+              type='text'
+              name='type'
+              placeholder={context.username + ', укажи свой заголовок'}
+              onChange={e => freeFromInput(e)}
+              onFocus={e => inputFocused(e)}
+            />
+            <input
+              type='text'
+              name='adress'
+              placeholder={context.username + ', укажи, кому шлем'}
+              onChange={e => freeFromInput(e)}
+              onFocus={e => inputFocused(e)}
+            />
+          </div>
+          <div className='main-container'>
+            <div
+              className='editor-container editor-container_classic-editor'
+              ref={editorContainerRef}
+            >
+              <div className='editor-container__editor'>
+                <div ref={editorRef}>
+                  {isLayoutReady && !reqeustConfirmed && (
+                    <>
+                      <CKEditor
+                        editor={ClassicEditor}
+                        config={editorConfig}
+                        ref={ckeref}
+                        onChange={changeEditor}
+                      />
+                      {editorState.requestText !== '' &&
+                        editorState.type !== '' &&
+                        editorState.adress !== '' && (
+                          <button onClick={sendEditorForm}>
+                            Отправить текст
+                          </button>
+                        )}
+                    </>
                   )}
-                </>
-              )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

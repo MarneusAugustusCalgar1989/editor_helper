@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useBeforeUnload } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AnimatedPage from './AnimatedPage';
 import { useAuth } from '../hooks/useAuth';
 
@@ -23,7 +23,7 @@ const MainMenu = ({ children }) => {
     };
 
     testFetch();
-  }, []);
+  }, [context.user]);
 
   return (
     <AnimatedPage>
