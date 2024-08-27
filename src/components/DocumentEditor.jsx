@@ -59,7 +59,8 @@ export default function DocumentEditor() {
   const [editorState, setEditorState] = useState({
     type: '', // Тип запроса, он же заголовок
     adress: '', // получатель запроса
-    regal: '', // запрашиваем печати и подписи
+    sign: false, // запрашиваем печати
+    stamp: false, // запрашиваем подписи
     fromWho: '', // сущность, от которой будет исходить запрос
     requestText: '', // текст
     user: context.user, // токен
@@ -255,12 +256,44 @@ export default function DocumentEditor() {
       ...editorState,
       [e.target.dataset.name]: e.target.textContent,
     });
-    document.querySelectorAll('li').forEach(el => {
-      if (el.classList.value.includes('active_chose')) {
-        el.classList.remove('active_chose');
-      }
-    });
+    document
+      .querySelector('.variant_chooser')
+      .querySelectorAll('li')
+      .forEach(el => {
+        if (el.classList.value.includes('active_chose')) {
+          el.classList.remove('active_chose');
+        }
+      });
     e.target.classList.add('active_chose');
+  };
+
+  const setEntityType = e => {
+    setEditorState({
+      ...editorState,
+      [e.target.dataset.name]: e.target.textContent,
+    });
+
+    document
+      .querySelector('.entity_subselector')
+      .querySelectorAll('li')
+      .forEach(el => {
+        if (el.classList.value.includes('active_chose')) {
+          el.classList.remove('active_chose');
+        }
+      });
+    e.target.classList.add('active_chose');
+  };
+
+  const setRegal = e => {
+    if (e.target.textContent === 'Подпись') {
+      setEditorState({ ...editorState, sign: !editorState.sign });
+    } else if (e.target.textContent === 'Печать') {
+      setEditorState({ ...editorState, stamp: !editorState.stamp });
+    } else {
+      alert('Что-то пошло не так!');
+    }
+
+    e.target.parentNode.classList.toggle('active_chose');
   };
 
   const freeFromInput = e => {
@@ -281,13 +314,19 @@ export default function DocumentEditor() {
   const sendEditorForm = async e => {
     console.log(editorState);
 
-    await fetch('http://213.59.156.172:3000/send_document_data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editorState),
-    }).then(data =>
-      data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
-    );
+    try {
+      await fetch('http://213.59.156.172:3000/send_document_data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editorState),
+      }).then(data =>
+        data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      console.log('Data was sended');
+    }
   };
 
   return (
@@ -305,6 +344,18 @@ export default function DocumentEditor() {
       )}
       {!reqeustConfirmed && (
         <div className='form_container'>
+          <div className='for_who'>
+            <label htmlFor='adress'>
+              <p>Кому:</p>
+            </label>
+            <input
+              type='text'
+              name='adress'
+              placeholder={context.username + ', укажи, кому шлем'}
+              onChange={e => freeFromInput(e)}
+              onFocus={e => inputFocused(e)}
+            />
+          </div>
           <div className='variant_chooser'>
             <ul>
               <li
@@ -326,17 +377,13 @@ export default function DocumentEditor() {
             </ul>
           </div>
           <div className='free_form_input'>
+            <label htmlFor='type'>
+              <p>Собственный запрос: </p>
+            </label>
             <input
               type='text'
               name='type'
               placeholder={context.username + ', укажи свой заголовок'}
-              onChange={e => freeFromInput(e)}
-              onFocus={e => inputFocused(e)}
-            />
-            <input
-              type='text'
-              name='adress'
-              placeholder={context.username + ', укажи, кому шлем'}
               onChange={e => freeFromInput(e)}
               onFocus={e => inputFocused(e)}
             />
@@ -356,19 +403,44 @@ export default function DocumentEditor() {
                         ref={ckeref}
                         onChange={changeEditor}
                       />
-                      {editorState.requestText !== '' &&
-                        editorState.type !== '' &&
-                        editorState.adress !== '' && (
-                          <button onClick={sendEditorForm}>
-                            Отправить текст
-                          </button>
-                        )}
                     </>
                   )}
                 </div>
               </div>
             </div>
           </div>
+          <div className='entity_selector'>
+            <p>Выберите сущность: </p>
+            <ul className='entity_subselector'>
+              <div className='obzor'>
+                <li data-name='fromWho' onClick={e => setEntityType(e)}>
+                  Томский Обзор
+                </li>
+              </div>
+              <div className='makushin'>
+                <li data-name='fromWho' onClick={e => setEntityType(e)}>
+                  Макушин медиа
+                </li>
+              </div>
+            </ul>
+          </div>
+          <div className='sign_stamp_selector'>
+            <p>Определите регалии:</p>
+            <ul className='sign_stamp_subselector'>
+              <li className='sign' onClick={e => setRegal(e)}>
+                {' '}
+                Подпись
+              </li>
+              <li className='stamp' onClick={e => setRegal(e)}>
+                Печать
+              </li>
+            </ul>
+          </div>
+          {editorState.requestText !== '' &&
+            editorState.type !== '' &&
+            editorState.adress !== '' && (
+              <button onClick={sendEditorForm}>Отправить запрос</button>
+            )}
         </div>
       )}
     </>
