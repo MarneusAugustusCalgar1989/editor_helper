@@ -40,28 +40,34 @@ const SignUpWindow = () => {
     user.password = formState.password;
     console.log(JSON.stringify(user));
 
-    await fetch('http://213.59.156.172:3000/singingin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
-      .then(data => data.text())
-      .then(text => {
-        setServAnswer(text);
-        context.username = user.username;
-      });
+    try {
+      await fetch('http://213.59.156.172:3000/singingin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      })
+        .then(data => data.text())
+        .then(text => {
+          setServAnswer(text);
+          context.username = user.username;
+        });
 
-    await fetch('http://213.59.156.172:3000/authorisate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
-      .then(data => data.text())
-      .then(text => {
-        context.user = text;
-        context.username = user.username;
-        localStorage.setItem('x-token', text);
-      });
+      await fetch('http://213.59.156.172:3000/authorisate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      })
+        .then(data => data.text())
+        .then(text => {
+          context.user = text;
+          context.username = user.username;
+          localStorage.setItem('x-token', text);
+        });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      console.log('Attempt to sign in');
+    }
   };
 
   return (

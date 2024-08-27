@@ -37,24 +37,30 @@ const LoginWindow = () => {
     formState.login = '';
     formState.password = '';
 
-    await fetch('http://213.59.156.172:3000/authorisate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
-      .then(data => data.text())
-      .then(text => {
-        setServAnswer(text);
-        setUsername(user.username);
-        setShowFeedback(text);
-        if (text !== 'Неверный пароль') {
-          context.user = text;
-          context.username = user.username;
-          localStorage.setItem('x-token', text);
-          localStorage.setItem('username', user.username);
-          setShowFeedback('');
-        }
-      });
+    try {
+      await fetch('http://213.59.156.172:3000/authorisate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      })
+        .then(data => data.text())
+        .then(text => {
+          setServAnswer(text);
+          setUsername(user.username);
+          setShowFeedback(text);
+          if (text !== 'Неверный пароль') {
+            context.user = text;
+            context.username = user.username;
+            localStorage.setItem('x-token', text);
+            localStorage.setItem('username', user.username);
+            setShowFeedback('');
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      console.log('Attempt to login');
+    }
   };
   return (
     <div className='App'>
