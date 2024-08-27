@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { useAuth } from '../hooks/useAuth';
+import { useState, useEffect, useRef } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import { useAuth } from '../hooks/useAuth'
 
 import {
   ClassicEditor,
@@ -44,19 +44,20 @@ import {
   TableToolbar,
   TextTransformation,
   Undo,
-} from 'ckeditor5';
+} from 'ckeditor5'
 
-import 'ckeditor5/ckeditor5.css';
+import 'ckeditor5/ckeditor5.css'
 
-import '../styles/documentEditor.css';
+import '../styles/documentEditor.css'
 
 export default function DocumentEditor() {
-  const editorContainerRef = useRef(null);
-  const editorRef = useRef(null);
-  const ckeref = useRef(null);
-  const [isLayoutReady, setIsLayoutReady] = useState(false);
-  const context = useAuth();
-  const [editorState, setEditorState] = useState({
+  const editorContainerRef = useRef(null)
+  const editorRef = useRef(null)
+  const ckeref = useRef(null)
+  const [isLayoutReady, setIsLayoutReady] = useState(false)
+  const context = useAuth()
+
+  const initEditorState = {
     type: '', // Тип запроса, он же заголовок
     adress: '', // получатель запроса
     sign: false, // запрашиваем печати
@@ -64,15 +65,17 @@ export default function DocumentEditor() {
     fromWho: '', // сущность, от которой будет исходить запрос
     requestText: '', // текст
     user: context.user, // токен
-  });
+  }
 
-  const [reqeustConfirmed, setRequestConfirmed] = useState(false);
+  const [editorState, setEditorState] = useState(initEditorState)
+
+  const [reqeustConfirmed, setRequestConfirmed] = useState(false)
 
   useEffect(() => {
-    setIsLayoutReady(true);
+    setIsLayoutReady(true)
 
-    return () => setIsLayoutReady(false);
-  }, []);
+    return () => setIsLayoutReady(false)
+  }, [])
 
   const editorConfig = {
     toolbar: {
@@ -242,100 +245,103 @@ export default function DocumentEditor() {
         'tableCellProperties',
       ],
     },
-  };
+  }
 
-  const changeEditor = e => {
+  const changeEditor = (e) => {
     setEditorState({
       ...editorState,
       requestText: ckeref.current.watchdog._editor.data.get(),
-    });
-  };
+    })
+  }
 
-  const setRequestType = e => {
+  const setRequestType = (e) => {
     setEditorState({
       ...editorState,
       [e.target.dataset.name]: e.target.textContent,
-    });
+    })
     document
       .querySelector('.variant_chooser')
       .querySelectorAll('li')
-      .forEach(el => {
+      .forEach((el) => {
         if (el.classList.value.includes('active_chose')) {
-          el.classList.remove('active_chose');
+          el.classList.remove('active_chose')
         }
-      });
-    e.target.classList.add('active_chose');
-  };
+      })
+    e.target.classList.add('active_chose')
+  }
 
-  const setEntityType = e => {
+  const setEntityType = (e) => {
     setEditorState({
       ...editorState,
       [e.target.dataset.name]: e.target.textContent,
-    });
+    })
 
     document
       .querySelector('.entity_subselector')
       .querySelectorAll('li')
-      .forEach(el => {
+      .forEach((el) => {
         if (el.classList.value.includes('active_chose')) {
-          el.classList.remove('active_chose');
+          el.classList.remove('active_chose')
         }
-      });
-    e.target.classList.add('active_chose');
-  };
+      })
+    e.target.classList.add('active_chose')
+  }
 
-  const setRegal = e => {
+  const setRegal = (e) => {
     if (e.target.textContent === 'Подпись') {
-      setEditorState({ ...editorState, sign: !editorState.sign });
+      setEditorState({ ...editorState, sign: !editorState.sign })
     } else if (e.target.textContent === 'Печать') {
-      setEditorState({ ...editorState, stamp: !editorState.stamp });
+      setEditorState({ ...editorState, stamp: !editorState.stamp })
     } else {
-      alert('Что-то пошло не так!');
+      alert('Что-то пошло не так!')
     }
 
-    e.target.parentNode.classList.toggle('active_chose');
-  };
+    e.target.classList.toggle('active_chose')
+  }
 
-  const freeFromInput = e => {
-    setEditorState({ ...editorState, [e.target.name]: e.target.value });
-    document.querySelectorAll('li').forEach(el => {
+  const freeFromInput = (e) => {
+    setEditorState({ ...editorState, [e.target.name]: e.target.value })
+    document.querySelectorAll('li').forEach((el) => {
       if (el.classList.value.includes('active_chose')) {
-        el.classList.remove('active_chose');
+        el.classList.remove('active_chose')
       }
-    });
-  };
+    })
+  }
 
-  const inputFocused = e => {
+  const inputFocused = (e) => {
     e.target.value !== ''
       ? setEditorState({ ...editorState, type: e.target.value })
-      : setEditorState(editorState);
-  };
+      : setEditorState(editorState)
+  }
 
-  const sendEditorForm = async e => {
-    console.log(editorState);
+  const sendEditorForm = async (e) => {
+    console.log(editorState)
 
     try {
       await fetch('http://213.59.156.172:3000/send_document_data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editorState),
-      }).then(data =>
-        data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
-      );
+      })
+        .then((data) =>
+          data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
+        )
+        .then(window.open('http://213.59.156.172:3000/snap'))
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      console.log('Data was sended');
+      console.log('Data was sended')
     }
-  };
+  }
 
   return (
     <>
       {reqeustConfirmed && (
         <div
-          className='request_recieved'
+          className="request_recieved"
           onClick={() => {
-            setRequestConfirmed(false);
+            setRequestConfirmed(false)
+            setEditorState(initEditorState)
           }}
         >
           <h1>Запрос получен</h1>
@@ -343,57 +349,57 @@ export default function DocumentEditor() {
         </div>
       )}
       {!reqeustConfirmed && (
-        <div className='form_container'>
-          <div className='for_who'>
-            <label htmlFor='adress'>
+        <div className="form_container">
+          <div className="for_who">
+            <label htmlFor="adress">
               <p>Кому:</p>
             </label>
             <input
-              type='text'
-              name='adress'
+              type="text"
+              name="adress"
               placeholder={context.username + ', укажи, кому шлем'}
-              onChange={e => freeFromInput(e)}
-              onFocus={e => inputFocused(e)}
+              onChange={(e) => freeFromInput(e)}
+              onFocus={(e) => inputFocused(e)}
             />
           </div>
-          <div className='variant_chooser'>
+          <div className="variant_chooser">
             <ul>
               <li
-                data-name='type'
-                onClick={e => {
-                  setRequestType(e);
+                data-name="type"
+                onClick={(e) => {
+                  setRequestType(e)
                 }}
               >
                 Запрос информации
               </li>
               <li
-                data-name='type'
-                onClick={e => {
-                  setRequestType(e);
+                data-name="type"
+                onClick={(e) => {
+                  setRequestType(e)
                 }}
               >
                 Письмо поддержки
               </li>
             </ul>
           </div>
-          <div className='free_form_input'>
-            <label htmlFor='type'>
+          <div className="free_form_input">
+            <label htmlFor="type">
               <p>Собственный запрос: </p>
             </label>
             <input
-              type='text'
-              name='type'
+              type="text"
+              name="type"
               placeholder={context.username + ', укажи свой заголовок'}
-              onChange={e => freeFromInput(e)}
-              onFocus={e => inputFocused(e)}
+              onChange={(e) => freeFromInput(e)}
+              onFocus={(e) => inputFocused(e)}
             />
           </div>
-          <div className='main-container'>
+          <div className="main-container">
             <div
-              className='editor-container editor-container_classic-editor'
+              className="editor-container editor-container_classic-editor"
               ref={editorContainerRef}
             >
-              <div className='editor-container__editor'>
+              <div className="editor-container__editor">
                 <div ref={editorRef}>
                   {isLayoutReady && !reqeustConfirmed && (
                     <>
@@ -409,29 +415,28 @@ export default function DocumentEditor() {
               </div>
             </div>
           </div>
-          <div className='entity_selector'>
+          <div className="entity_selector">
             <p>Выберите сущность: </p>
-            <ul className='entity_subselector'>
-              <div className='obzor'>
-                <li data-name='fromWho' onClick={e => setEntityType(e)}>
+            <ul className="entity_subselector">
+              <div className="obzor">
+                <li data-name="fromWho" onClick={(e) => setEntityType(e)}>
                   Томский Обзор
                 </li>
               </div>
-              <div className='makushin'>
-                <li data-name='fromWho' onClick={e => setEntityType(e)}>
+              <div className="makushin">
+                <li data-name="fromWho" onClick={(e) => setEntityType(e)}>
                   Макушин медиа
                 </li>
               </div>
             </ul>
           </div>
-          <div className='sign_stamp_selector'>
+          <div className="sign_stamp_selector">
             <p>Определите регалии:</p>
-            <ul className='sign_stamp_subselector'>
-              <li className='sign' onClick={e => setRegal(e)}>
-                {' '}
+            <ul className="sign_stamp_subselector">
+              <li className="sign" onClick={(e) => setRegal(e)}>
                 Подпись
               </li>
-              <li className='stamp' onClick={e => setRegal(e)}>
+              <li className="stamp" onClick={(e) => setRegal(e)}>
                 Печать
               </li>
             </ul>
@@ -444,5 +449,5 @@ export default function DocumentEditor() {
         </div>
       )}
     </>
-  );
+  )
 }
