@@ -290,7 +290,7 @@ export default function DocumentEditor() {
   const setRegal = (e) => {
     if (e.target.textContent === 'Подпись') {
       setEditorState({ ...editorState, sign: !editorState.sign })
-    } else if (e.target.textContent === 'Печать') {
+    } else if (e.target.textContent === 'Подпись и печать') {
       setEditorState({ ...editorState, stamp: !editorState.stamp })
     } else {
       alert('Что-то пошло не так!')
@@ -322,11 +322,9 @@ export default function DocumentEditor() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editorState),
-      })
-        .then((data) =>
-          data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
-        )
-        .then(window.open('http://213.59.156.172:3000/snap'))
+      }).then((data) =>
+        data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
+      )
     } catch (e) {
       console.log(e)
     } finally {
@@ -334,18 +332,49 @@ export default function DocumentEditor() {
     }
   }
 
+  const getDocument = async () => {
+    console.log('Trying to catch the file')
+
+    try {
+      await fetch('http://213.59.156.172:3000/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: context.username,
+          user: context.user,
+        }),
+      }).then((data) =>
+        data?.blob().then((blob) => {
+          const fileUrl = window.URL.createObjectURL(blob)
+          let alink = document.createElement('a')
+          alink.href = fileUrl
+          alink.download = editorState.type + ' ' + editorState.adress
+          alink.click()
+        })
+      )
+    } catch (e) {
+      console.log(e)
+    } finally {
+      console.log('Document was catched')
+    }
+  }
+
   return (
     <>
       {reqeustConfirmed && (
-        <div
-          className="request_recieved"
-          onClick={() => {
-            setRequestConfirmed(false)
-            setEditorState(initEditorState)
-          }}
-        >
+        <div className="request_recieved">
           <h1>Запрос получен</h1>
-          <p>Отправить другой запрос?</p>
+
+          <p onClick={(e) => getDocument(e)}>Скачать запрос</p>
+
+          <p
+            onClick={() => {
+              setRequestConfirmed(false)
+              setEditorState(initEditorState)
+            }}
+          >
+            Отправить другой запрос?
+          </p>
         </div>
       )}
       {!reqeustConfirmed && (
@@ -437,7 +466,7 @@ export default function DocumentEditor() {
                 Подпись
               </li>
               <li className="stamp" onClick={(e) => setRegal(e)}>
-                Печать
+                Подпись и печать
               </li>
             </ul>
           </div>
