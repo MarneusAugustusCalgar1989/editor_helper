@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import UserActivities from '../components/form/UserActivities';
-import Wrapper from '../components/Wrapper';
-import { useAuth } from '../hooks/useAuth';
+import { useEffect, useState } from 'react'
+import UserActivities from '../components/form/UserActivities'
+import Wrapper from '../components/Wrapper'
+import { useAuth } from '../hooks/useAuth'
 
 const Profile = () => {
-  const context = useAuth();
-  const [userData, setUserData] = useState([]);
+  const context = useAuth()
+  const [userData, setUserData] = useState([])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -17,32 +17,32 @@ const Profile = () => {
           },
           body: JSON.stringify(context),
         })
-          .then(data => data.json())
-          .then(data => setUserData(data));
+          .then((data) => data.json())
+          .then((data) => setUserData(data))
       } catch (e) {
-        console.log(e);
+        console.log(e)
       } finally {
-        console.log('Fetched');
+        console.log('Fetched')
       }
-    };
-    fetchUserData();
-  }, [context]);
+    }
+    fetchUserData()
+  }, [context])
 
-  console.log(userData);
+  console.log(userData)
   return (
-    <div className='App'>
+    <div className="App">
       <Wrapper>
         <h1>Привет, {context.username}!</h1>
         {userData && (
           <>
-            {userData.map(el => (
+            {userData.map((el) => (
               <UserActivities item={el} key={el.adress} />
             ))}
           </>
         )}
       </Wrapper>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile
