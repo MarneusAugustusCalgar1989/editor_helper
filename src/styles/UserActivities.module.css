@@ -1,0 +1,10 @@
+.user_activities {
+  width: 90%;
+  height: 40svh;
+  border: 1px solid var(--accent_light);
+  overflow: scroll;
+}
+
+.request_container {
+  border: 1px solid var(--accent_purple);
+}

@@ -1,23 +1,45 @@
+import { useEffect, useState } from 'react';
 import UserActivities from '../components/form/UserActivities';
 import Wrapper from '../components/Wrapper';
 import { useAuth } from '../hooks/useAuth';
 
 const Profile = () => {
   const context = useAuth();
-  const testItems = [
-    {
-      name: 'name',
-      text: 'text',
-    },
-    { name: 'second name', text: 'another text' },
-  ];
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        await fetch('http://213.59.156.172:3000/get_activities', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(context),
+        })
+          .then(data => data.json())
+          .then(data => setUserData(data));
+      } catch (e) {
+        console.log(e);
+      } finally {
+        console.log('Fetched');
+      }
+    };
+    fetchUserData();
+  }, [context]);
+
+  console.log(userData);
   return (
     <div className='App'>
       <Wrapper>
         <h1>Привет, {context.username}!</h1>
-        {testItems.map(el => (
-          <UserActivities item={el} />
-        ))}
+        {userData && (
+          <>
+            {userData.map(el => (
+              <UserActivities item={el} key={el.adress} />
+            ))}
+          </>
+        )}
       </Wrapper>
     </div>
   );
