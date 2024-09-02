@@ -8,3 +8,10 @@
 .request_container {
   border: 1px solid var(--accent_purple);
 }
+
+.remove_button {
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: bolder;
+  color: var(--accent_pink);
+}

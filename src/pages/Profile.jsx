@@ -21,7 +21,7 @@ const Profile = () => {
           .then(data => data.json())
           .then(data => {
             setUserData(data.flat());
-            console.log(data);
+            console.log(userData);
           });
       } catch (e) {
         console.log(e);
@@ -36,6 +36,8 @@ const Profile = () => {
     <div className='App'>
       <Wrapper>
         <h1>Привет, {context.username}!</h1>
+        {userData.length === 0 && <h1>Пока нет активности</h1>}
+
         {userData.map(el => (
           <UserActivities item={el} key={el?.requestText || 0} />
         ))}
