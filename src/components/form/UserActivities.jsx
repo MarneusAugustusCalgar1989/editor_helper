@@ -3,9 +3,12 @@ import styles from '../../styles/UserActivities.module.css';
 
 const UserActivities = ({ item }) => {
   useEffect(() => {
+    console.log(document.querySelector('.' + styles.request_container));
     document.querySelector('.' + styles.request_container).innerHTML =
       item.requestText;
   }, [item.requestText]);
+
+  console.log(item);
 
   return (
     <div className={styles.user_activities}>
