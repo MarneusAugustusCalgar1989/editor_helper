@@ -1,8 +1,10 @@
 import styles from '../../styles/UserActivities.module.css';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
-const UserActivities = ({ item }) => {
+const UserActivities = ({ item, innerCB }) => {
   const context = useAuth();
+  const navigate = useNavigate();
 
   const createInnerHtml = item => {
     return { __html: item };
@@ -12,7 +14,6 @@ const UserActivities = ({ item }) => {
     const findIndex = e.target.parentNode.parentNode.querySelector(
       '.' + styles.request_container
     ).innerHTML;
-    console.log(findIndex);
 
     context.index = findIndex;
 
@@ -22,16 +23,19 @@ const UserActivities = ({ item }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(context),
-    }).then(data => console.log(data));
+    })
+      .then(data => data.json())
+      .then(data => {
+        innerCB(findIndex);
+        if (data[0][0].Default) {
+          navigate('/');
+        }
+      });
   };
 
   return (
     <div>
-      {!item && <h1>Загрузка</h1>}
-
-      {item.Default && (
-        <h1 className={styles.no_activity}>Пока нет активности</h1>
-      )}
+      {item.Default && <h1>Нечего показывать</h1>}
 
       {!item.Default && (
         <div className={styles.user_activities}>
