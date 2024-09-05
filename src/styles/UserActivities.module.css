@@ -1,17 +1,51 @@
 .user_activities {
-  width: 90%;
-  height: 40svh;
-  border: 1px solid var(--accent_light);
-  overflow: scroll;
+  width: 100%;
+  height: min-content;
+  /* border: 1px solid var(--accent_light); */
+  border: 1px solid red;
+  margin: 2rem;
+  padding: 1rem;
 }
 
-.request_container {
-  border: 1px solid var(--accent_purple);
+.remove_button_wrapper {
+  border: 1px solid red;
+  margin-top: -1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
 }
 
 .remove_button {
   cursor: pointer;
-  font-size: 2rem;
   font-weight: bolder;
   color: var(--accent_pink);
+}
+
+.ua_header_wrapper {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.request_container {
+  border: 1px solid var(--accent_purple);
+  margin: 1rem;
+}
+
+.button_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.user_activities_button {
+  cursor: pointer;
+  border: 1px solid red;
+  padding: 0.5rem;
 }

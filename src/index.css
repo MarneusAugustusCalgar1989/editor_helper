@@ -473,3 +473,13 @@ footer {
 .active {
   color: var(--accent_pink) !important;
 }
+
+/* PROFILE PAGE */
+
+.activities_wrapper {
+  margin: 2rem;
+  width: 50%;
+}
+.user_activities_list {
+  width: 100%;
+}
