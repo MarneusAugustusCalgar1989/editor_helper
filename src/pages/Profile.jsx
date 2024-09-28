@@ -50,7 +50,7 @@ const Profile = () => {
           {userData.map((el) => (
             <UserActivities
               item={el}
-              key={el?.requestText || 0}
+              key={el?.timeStamp || 0}
               innerCB={innerCB}
               className="user_activities_list"
             />

@@ -60,11 +60,15 @@ const UserActivities = ({ item, innerCB }) => {
             dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
           ></div>
           <div className={styles.button_wrapper}>
-            <div className={styles.user_activities_button}>
+            <div
+              className={styles.user_activities_button}
+              onClick={() => {
+                context.item = item
+                navigate('/documentcreator')
+                console.log(item)
+              }}
+            >
               <p>Повторить</p>
-            </div>
-            <div className={styles.user_activities_button}>
-              <p>Посмотреть</p>
             </div>
           </div>
         </div>
@@ -90,7 +94,7 @@ const UserActivities = ({ item, innerCB }) => {
           ></div>
           <div className={styles.button_wrapper}>
             <div className={styles.user_activities_button}>
-              <p>Посмотреть</p>
+              <p>Скачать</p>
             </div>
           </div>
         </div>
@@ -116,7 +120,7 @@ const UserActivities = ({ item, innerCB }) => {
           ></div>
           <div className={styles.button_wrapper}>
             <div className={styles.user_activities_button}>
-              <p>Повторить</p>
+              <p>Скачать</p>
             </div>
           </div>
         </div>
