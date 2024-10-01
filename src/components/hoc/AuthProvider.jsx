@@ -5,7 +5,10 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   let user = localStorage.getItem('x-token') || null;
   let username = localStorage.getItem('username') || null;
-  const refreshState = () => {};
+  // let item = {};
+  const refreshState = () => {
+    // return (item = {});
+  };
   const logOut = () => {
     user = '';
     username = '';

@@ -5,6 +5,9 @@ import { useAuth } from '../hooks/useAuth';
 
 const MainMenu = ({ children }) => {
   const context = useAuth();
+  if (context.item) {
+    context.item = '';
+  }
 
   const [serviceON, setServiceOn] = useState(false);
 
