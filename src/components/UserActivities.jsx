@@ -1,10 +1,69 @@
 import styles from '../styles/UserActivities.module.css';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const UserActivities = ({ item, innerCB }) => {
   const context = useAuth();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState('');
+  const [uploadProgress, setUploadProgress] = useState('');
+  const [imageLoaded, setImgLoaded] = useState('');
+
+  useEffect(() => {
+    const getImage = async () => {
+      const response = await fetch(
+        'http://213.59.156.172:3000/' + item.requestText,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'image/jpg' },
+        }
+      );
+
+      if (response.ok) {
+        const reader = response.body.getReader();
+        const contentLength = +response.headers.get('Content-Length');
+        let recievedLength = 0;
+        let chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          console.log(uploadProgress);
+          chunks.push(value);
+          recievedLength += value.length;
+          setUploadProgress(
+            `${Math.floor((recievedLength * 100) / contentLength)}%`
+          );
+        }
+        const blob = new Blob(chunks);
+        const imgSrc = URL.createObjectURL(blob);
+        setShowModal(false);
+        setUploadProgress(0);
+
+        URL.revokeObjectURL(blob);
+
+        setImgLoaded(imgSrc);
+      }
+    };
+
+    //   .then(data => {
+    //       if (data.ok) {
+    //         const reader = data.body.getReader();
+    //         reader.read().then();
+    //       }
+    //     })
+    //     .then(data => {
+    //       const blob = new Blob(data.value);
+    //       const imgSrc = URL.createObjectURL(blob);
+    //       setImageSource(imgSrc);
+    //       URL.revokeObjectURL(blob);
+    //     });
+    // };
+    getImage();
+  }, [item]);
 
   const createInnerHtml = item => {
     return { __html: item };
@@ -155,23 +214,9 @@ const UserActivities = ({ item, innerCB }) => {
             className={styles.request_container}
             // dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
           >
-            <img
-              src={'http://213.59.156.172:3000/' + item.requestText}
-              alt={item.requestText}
-            />
-          </div>
-          <div className={styles.button_wrapper}>
-            <div
-              className={styles.user_activities_button}
-              onClick={e => {
-                downloadLogotypedImage(e);
-              }}
-            >
-              <p>
-                Скачать{' '}
-                <span className={styles.tec_span}>{item.timeStamp}</span>
-              </p>
-            </div>
+            <a href={imageLoaded} download={item.requestText} target='blank'>
+              <img src={imageLoaded} alt={item.requestText} />
+            </a>
           </div>
         </div>
       )}

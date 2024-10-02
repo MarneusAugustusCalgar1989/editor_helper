@@ -12,13 +12,13 @@ import {
 import Logotyper from './pages/Logotyper';
 import Mockuper from './pages/Mockuper';
 import AudioConverter from './pages/AudioConverter';
-import DocumentCreator from './pages/DocumentCreator';
 import ErrorPage from './components/ErrorPage';
 import LoginWindow from './components/LoginWindow';
 import SignUpWindow from './components/SignUpWindow';
 import RequireAuth from './components/hoc/RequireAuth';
 import { AuthProvider } from './components/hoc/AuthProvider';
 import Profile from './pages/Profile';
+import DocumentEditor from './components/DocumentEditor';
 
 function ErrorBoundary() {
   let error = useRouteError();
@@ -40,7 +40,7 @@ const router = createBrowserRouter(
         }
       />
       <Route path='/mockuper' element={<Mockuper />} />
-      <Route path='/documentcreator' element={<DocumentCreator />} />
+      <Route path='/documentcreator' element={<DocumentEditor />} />
       <Route path='/login' element={<LoginWindow />} />
       <Route path='/signup' element={<SignUpWindow />} />
       <Route
