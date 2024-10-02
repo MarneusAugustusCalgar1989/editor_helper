@@ -19,6 +19,7 @@
 
 .form_container {
   width: 60%;
+  min-height: 50svh;
   margin: 1rem;
   display: flex;
   flex-direction: column;

@@ -7,7 +7,6 @@ const DocumentCreator = () => {
     <div className='App'>
       <Wrapper>
         <AnimatedPage>
-          <h1>Документодел</h1>
           <DocumentEditor />
         </AnimatedPage>
       </Wrapper>

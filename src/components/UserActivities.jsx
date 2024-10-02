@@ -1,21 +1,27 @@
-import styles from '../styles/UserActivities.module.css'
-import { useAuth } from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
+import styles from '../styles/UserActivities.module.css';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const UserActivities = ({ item, innerCB }) => {
-  const context = useAuth()
-  const navigate = useNavigate()
+  const context = useAuth();
+  const navigate = useNavigate();
 
-  const createInnerHtml = (item) => {
-    return { __html: item }
-  }
+  const createInnerHtml = item => {
+    return { __html: item };
+  };
 
-  const removeActivity = async (e) => {
-    const findIndex = e.target.parentNode.parentNode.querySelector(
-      '.' + styles.request_container
-    ).innerHTML
+  const removeActivity = async e => {
+    const findIndex =
+      e.target.parentNode.parentNode
+        .querySelector('.' + styles.request_container)
+        .querySelector('img')?.alt ||
+      e.target.parentNode.parentNode.querySelector(
+        '.' + styles.request_container
+      ).innerHTML;
 
-    context.index = findIndex
+    console.log(findIndex);
+
+    context.index = findIndex;
 
     await fetch('http://213.59.156.172:3000/remove_activity', {
       method: 'POST',
@@ -24,53 +30,53 @@ const UserActivities = ({ item, innerCB }) => {
       },
       body: JSON.stringify(context),
     })
-      .then((data) => data.json())
-      .then((data) => {
-        innerCB(findIndex)
+      .then(data => data.json())
+      .then(data => {
+        innerCB(findIndex);
         if (data[0][0].Default) {
-          navigate('/')
+          navigate('/');
         }
-      })
-  }
+      });
+  };
 
-  const postDate = new Date(item.timeStamp)
-  let month = ''
+  const postDate = new Date(item.timeStamp);
+  let month = '';
 
   if (postDate.getMonth() === 0) {
-    month = 'Января'
+    month = 'Января';
   }
   if (postDate.getMonth() === 1) {
-    month = 'Февраля'
+    month = 'Февраля';
   }
   if (postDate.getMonth() === 2) {
-    month = 'Марта'
+    month = 'Марта';
   }
   if (postDate.getMonth() === 3) {
-    month = 'Апреля'
+    month = 'Апреля';
   }
   if (postDate.getMonth() === 4) {
-    month = 'Мая'
+    month = 'Мая';
   }
   if (postDate.getMonth() === 5) {
-    month = 'Июня'
+    month = 'Июня';
   }
   if (postDate.getMonth() === 6) {
-    month = 'Июля'
+    month = 'Июля';
   }
   if (postDate.getMonth() === 7) {
-    month = 'Августа'
+    month = 'Августа';
   }
   if (postDate.getMonth() === 8) {
-    month = 'Сентября'
+    month = 'Сентября';
   }
   if (postDate.getMonth() === 9) {
-    month = 'Октября'
+    month = 'Октября';
   }
   if (postDate.getMonth() === 10) {
-    month = 'Ноября'
+    month = 'Ноября';
   }
   if (postDate.getMonth() === 11) {
-    month = 'Декабря'
+    month = 'Декабря';
   }
 
   let postTime = `${postDate.getDay()} ${month} ${postDate.getFullYear()}. ${
@@ -83,9 +89,10 @@ const UserActivities = ({ item, innerCB }) => {
     postDate.getSeconds() > 9
       ? postDate.getSeconds()
       : '0' + postDate.getSeconds()
-  }`
+  }`;
 
-  console.log(postTime)
+  const downloadLogotypedImage = e => {};
+
   return (
     <div>
       {item.Default && <h1>Нечего показывать</h1>}
@@ -96,7 +103,7 @@ const UserActivities = ({ item, innerCB }) => {
             <p>{postTime}</p>
             <span
               className={styles.remove_button}
-              onClick={(e) => removeActivity(e)}
+              onClick={e => removeActivity(e)}
             >
               &times;
             </span>
@@ -117,11 +124,12 @@ const UserActivities = ({ item, innerCB }) => {
             <div
               className={styles.user_activities_button}
               onClick={() => {
-                context.item = item
-                navigate('/documentcreator')
+                context.item = item;
+                navigate('/documentcreator');
               }}
             >
               <p>Повторить</p>
+              <span className={styles.tec_span}>{item.timeStamp}</span>
             </div>
           </div>
         </div>
@@ -134,7 +142,7 @@ const UserActivities = ({ item, innerCB }) => {
 
             <span
               className={styles.remove_button}
-              onClick={(e) => removeActivity(e)}
+              onClick={e => removeActivity(e)}
             >
               &times;
             </span>
@@ -145,11 +153,24 @@ const UserActivities = ({ item, innerCB }) => {
 
           <div
             className={styles.request_container}
-            dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
-          ></div>
+            // dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
+          >
+            <img
+              src={'http://213.59.156.172:3000/' + item.requestText}
+              alt={item.requestText}
+            />
+          </div>
           <div className={styles.button_wrapper}>
-            <div className={styles.user_activities_button}>
-              <p>Скачать</p>
+            <div
+              className={styles.user_activities_button}
+              onClick={e => {
+                downloadLogotypedImage(e);
+              }}
+            >
+              <p>
+                Скачать{' '}
+                <span className={styles.tec_span}>{item.timeStamp}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -162,7 +183,7 @@ const UserActivities = ({ item, innerCB }) => {
 
             <span
               className={styles.remove_button}
-              onClick={(e) => removeActivity(e)}
+              onClick={e => removeActivity(e)}
             >
               &times;
             </span>
@@ -178,12 +199,13 @@ const UserActivities = ({ item, innerCB }) => {
           <div className={styles.button_wrapper}>
             <div className={styles.user_activities_button}>
               <p>Скачать</p>
+              <span className={styles.tec_span}>{item.timeStamp}</span>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserActivities
+export default UserActivities;
