@@ -2,67 +2,99 @@ import styles from '../styles/UserActivities.module.css';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import ModalWindow from './ModalWindow';
+import AudioPlayer from './AudioPlayer';
 
 const UserActivities = ({ item, innerCB }) => {
   const context = useAuth();
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
   const [imageLoaded, setImgLoaded] = useState('');
+  const [audioLoaded, setAudioLoaded] = useState('');
 
-  useEffect(() => {
-    const getImage = async () => {
-      const response = await fetch(
-        'http://213.59.156.172:3000/' + item.requestText,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'image/jpg' },
-        }
-      );
-
-      if (response.ok) {
-        const reader = response.body.getReader();
-        const contentLength = +response.headers.get('Content-Length');
-        let recievedLength = 0;
-        let chunks = [];
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
-          console.log(uploadProgress);
-          chunks.push(value);
-          recievedLength += value.length;
-          setUploadProgress(
-            `${Math.floor((recievedLength * 100) / contentLength)}%`
-          );
-        }
-        const blob = new Blob(chunks);
-        const imgSrc = URL.createObjectURL(blob);
-        setShowModal(false);
-        setUploadProgress(0);
-
-        URL.revokeObjectURL(blob);
-
-        setImgLoaded(imgSrc);
+  const getConvertedImage = async () => {
+    setShowModal(true);
+    const response = await fetch(
+      'http://213.59.156.172:3000/converted_images/' + item.requestText,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'image/jpg' },
       }
-    };
+    );
 
-    //   .then(data => {
-    //       if (data.ok) {
-    //         const reader = data.body.getReader();
-    //         reader.read().then();
-    //       }
-    //     })
-    //     .then(data => {
-    //       const blob = new Blob(data.value);
-    //       const imgSrc = URL.createObjectURL(blob);
-    //       setImageSource(imgSrc);
-    //       URL.revokeObjectURL(blob);
-    //     });
-    // };
-    getImage();
+    if (response.ok) {
+      const reader = response.body.getReader();
+      const contentLength = +response.headers.get('Content-Length');
+      let recievedLength = 0;
+      let chunks = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        chunks.push(value);
+        recievedLength += value.length;
+        setUploadProgress(
+          `${Math.floor((recievedLength * 100) / contentLength)}%`
+        );
+      }
+      const blob = new Blob(chunks);
+      const imgSrc = URL.createObjectURL(blob);
+      setShowModal(false);
+      setUploadProgress(0);
+
+      URL.revokeObjectURL(blob);
+
+      setImgLoaded(imgSrc);
+    }
+  };
+
+  const getConvertedAudio = async () => {
+    setShowModal(true);
+    const response = await fetch(
+      'http://213.59.156.172:3000/converted_images/' + item.requestText,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'image/jpg' },
+      }
+    );
+
+    if (response.ok) {
+      const reader = response.body.getReader();
+      const contentLength = +response.headers.get('Content-Length');
+      let recievedLength = 0;
+      let chunks = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        chunks.push(value);
+        recievedLength += value.length;
+        setUploadProgress(
+          `${Math.floor((recievedLength * 100) / contentLength)}%`
+        );
+      }
+      const blob = new Blob(chunks);
+      const imgSrc = URL.createObjectURL(blob);
+      setShowModal(false);
+      setUploadProgress(0);
+
+      URL.revokeObjectURL(blob);
+
+      setAudioLoaded(imgSrc);
+    }
+  };
+  useEffect(() => {
+    if (item.logotype_image) {
+      getConvertedImage();
+    }
+    if (item.convert_audio) {
+      getConvertedAudio();
+    }
   }, [item]);
 
   const createInnerHtml = item => {
@@ -77,8 +109,6 @@ const UserActivities = ({ item, innerCB }) => {
       e.target.parentNode.parentNode.querySelector(
         '.' + styles.request_container
       ).innerHTML;
-
-    console.log(findIndex);
 
     context.index = findIndex;
 
@@ -150,8 +180,6 @@ const UserActivities = ({ item, innerCB }) => {
       : '0' + postDate.getSeconds()
   }`;
 
-  const downloadLogotypedImage = e => {};
-
   return (
     <div>
       {item.Default && <h1>Нечего показывать</h1>}
@@ -210,13 +238,14 @@ const UserActivities = ({ item, innerCB }) => {
             <h1>Логотипер</h1>
           </div>
 
-          <div
-            className={styles.request_container}
-            // dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
-          >
-            <a href={imageLoaded} download={item.requestText} target='blank'>
-              <img src={imageLoaded} alt={item.requestText} />
-            </a>
+          <div className={styles.request_container}>
+            {showModal ? (
+              <ModalWindow progress={uploadProgress} />
+            ) : (
+              <a href={imageLoaded} download={item.requestText} target='blank'>
+                <img src={imageLoaded} alt={item.requestText} />
+              </a>
+            )}
           </div>
         </div>
       )}
@@ -236,14 +265,29 @@ const UserActivities = ({ item, innerCB }) => {
           <div className={styles.ua_header_wrapper}>
             <h1>Аудиокнвертер</h1>
           </div>
-
+          <AudioPlayer />
           <div
             className={styles.request_container}
-            dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
-          ></div>
+            // dangerouslySetInnerHTML={createInnerHtml(item.requestText)}
+          >
+            {showModal ? (
+              <ModalWindow progress={uploadProgress} />
+            ) : (
+              <a href={audioLoaded} download={item.requestText} target='blank'>
+                <p>{item.requestText}</p>
+              </a>
+            )}
+          </div>
+
           <div className={styles.button_wrapper}>
             <div className={styles.user_activities_button}>
-              <p>Скачать</p>
+              <p
+                onClick={e => {
+                  getConvertedAudio();
+                }}
+              >
+                Скачать
+              </p>
               <span className={styles.tec_span}>{item.timeStamp}</span>
             </div>
           </div>

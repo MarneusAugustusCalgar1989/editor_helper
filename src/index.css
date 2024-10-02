@@ -409,7 +409,7 @@ footer {
 
 .modal_window {
   position: relative;
-  width: 20%;
+  width: 50%;
   height: 5svh;
   border: 1px solid var(--second_bg);
   border-radius: 10px;
@@ -436,11 +436,8 @@ footer {
   left: -2.5%;
   top: -5%;
   border-radius: 10px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--accent_pink) 99%,
-    transparent
-  );
+  background-image: var(--accent_pink);
+
   background-size: 4000px;
   filter: blur(2px);
 
