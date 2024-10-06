@@ -395,6 +395,7 @@ footer {
   width: 80%;
   max-width: 1920px;
   min-width: 300px;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -474,9 +475,16 @@ footer {
 /* PROFILE PAGE */
 
 .activities_wrapper {
-  margin: 2rem;
-  width: 50%;
+  margin-top: 2rem;
+  width: 60%;
 }
 .user_activities_list {
   width: 100%;
+}
+
+/*FILETER SORTER*/
+
+.filter_sorter {
+  width: 100%;
+  border: 1px solid red;
 }

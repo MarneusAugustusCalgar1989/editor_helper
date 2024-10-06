@@ -19,7 +19,7 @@ const UserActivities = ({ item, innerCB }) => {
       'http://213.59.156.172:3000/converted_images/' + item.requestText,
       {
         method: 'GET',
-        headers: { 'Content-Type': 'image/jpg' },
+        headers: { 'Content-Type': 'image/jpg', user: context.user },
       }
     )
 
@@ -57,7 +57,7 @@ const UserActivities = ({ item, innerCB }) => {
       'http://213.59.156.172:3000/converted_sounds/' + item.requestText,
       {
         method: 'GET',
-        headers: { 'Content-Type': 'image/jpg' },
+        headers: { 'Content-Type': 'image/jpg', user: context.user },
       }
     )
 
@@ -94,7 +94,6 @@ const UserActivities = ({ item, innerCB }) => {
     }
     if (item.convert_audio) {
       getConvertedAudio()
-      console.log(item.requestText)
     }
   }, [item])
 
@@ -122,6 +121,7 @@ const UserActivities = ({ item, innerCB }) => {
   }
 
   const postDate = new Date(item.timeStamp)
+
   let month = ''
 
   if (postDate.getMonth() === 0) {
@@ -161,7 +161,7 @@ const UserActivities = ({ item, innerCB }) => {
     month = 'Декабря'
   }
 
-  let postTime = `${postDate.getDay()} ${month} ${postDate.getFullYear()}. ${
+  let postTime = `${postDate.getDate()} ${month} ${postDate.getFullYear()}. ${
     postDate.getHours() > 9 ? postDate.getHours() : '0' + postDate.getHours()
   }:${
     postDate.getMinutes() > 9
@@ -180,7 +180,7 @@ const UserActivities = ({ item, innerCB }) => {
       {!item.Default && item.type && (
         <div className={styles.user_activities}>
           <div className={styles.remove_button_wrapper}>
-            <p>{postTime}</p>
+            <p>{postTime + ' '}</p>
             <span
               className={styles.remove_button}
               onClick={(e) => removeActivity(e)}
@@ -218,7 +218,7 @@ const UserActivities = ({ item, innerCB }) => {
       {!item.Default && item.logotype_image && (
         <div className={styles.user_activities}>
           <div className={styles.remove_button_wrapper}>
-            <p>{postTime}</p>
+            <p>{postTime + ' '}</p>
 
             <span
               className={styles.remove_button}
@@ -271,7 +271,7 @@ const UserActivities = ({ item, innerCB }) => {
                       .split('_converted', 2)[0]
                   }
                 </p>
-                <AudioPlayer />
+                <AudioPlayer song={audioLoaded} />
                 <div className={styles.button_wrapper}>
                   <div className={styles.user_activities_button}>
                     <a
