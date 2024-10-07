@@ -178,7 +178,7 @@ const UserActivities = ({ item, innerCB }) => {
       {item.Default && <h1>Нечего показывать</h1>}
 
       {!item.Default && item.type && (
-        <div className={styles.user_activities}>
+        <div className={styles.user_activities + ' ' + styles.document_maker}>
           <div className={styles.remove_button_wrapper}>
             <p>{postTime + ' '}</p>
             <span
@@ -216,7 +216,7 @@ const UserActivities = ({ item, innerCB }) => {
       )}
 
       {!item.Default && item.logotype_image && (
-        <div className={styles.user_activities}>
+        <div className={styles.user_activities + ' ' + styles.image_converter}>
           <div className={styles.remove_button_wrapper}>
             <p>{postTime + ' '}</p>
 
@@ -244,7 +244,7 @@ const UserActivities = ({ item, innerCB }) => {
       )}
 
       {!item.Default && item.convert_audio && (
-        <div className={styles.user_activities}>
+        <div className={styles.user_activities + ' ' + styles.audio_converter}>
           <div className={styles.remove_button_wrapper}>
             <p>{postTime}</p>
 

@@ -1,48 +1,81 @@
 .audioplayer_wrapper {
   width: 100%;
+  max-width: 500px;
   min-height: 10svh;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   margin-top: 1rem;
-  border: 1px solid aquamarine;
+  transition: all 0.5s ease-out;
+  border-radius: 10%;
 }
 
 .aurdioplayer_duration_wrapper {
   width: 100%;
+  padding: 2rem 2rem 0rem 2rem;
+  margin-bottom: 0.7rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-
 .audioplayer_active {
-  background-color: var(--accent_pink);
+  background-color: var(--accent_light);
+  -webkit-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  -moz-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+}
+
+.aurdioplayer_duration_wrapper p {
+  opacity: 0.4;
 }
 
 .audioplayer_buttons_wrapper {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
 .audioplayer_buttons {
-  border: 1px solid black;
   margin: 1rem;
-  padding: 0.1rem;
+  padding: 0.5rem;
   cursor: pointer;
+  background-color: var(--accent_light);
+  -webkit-box-shadow: 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  -moz-box-shadow: 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  box-shadow: 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  user-select: none;
+
+  opacity: 0.5;
+  &:hover {
+    color: var(--accent_pink);
+  }
+  &:active {
+    -webkit-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+    -moz-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+    box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  }
 }
 
 .audioplayer_playback {
   position: relative;
   width: 100%;
+  margin-left: 1rem;
+  margin-right: 1rem;
   min-height: 1svh;
   height: 10%;
   background-color: var(--second_bg);
   z-index: 10;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 1s;
+
+  &:hover {
+    border-bottom: 1px dotted var(--accent_pink);
+  }
 }
 
 .audioplayer_playhead {
@@ -53,7 +86,7 @@
   height: 1rem;
   background-color: var(--accent_purple);
   border-radius: 100%;
-  top: -44%;
+  top: -50%;
   left: -1%;
   pointer-events: none;
 }
@@ -62,8 +95,15 @@
   position: absolute;
   margin: 0;
   padding: 0;
+  top: -1px;
   min-height: 1svh;
   width: 0%;
   background-color: var(--accent_pink);
+  border: 1px solid var(--accent_pink);
   pointer-events: none;
+}
+.player_button_active {
+  color: var(--accent_purple);
+  opacity: 1;
+  box-shadow: none;
 }

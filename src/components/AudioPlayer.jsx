@@ -77,19 +77,29 @@ const AudioPlayer = ({ song }) => {
     setCurpose(playTarget.currentTime)
   }
 
-  return (
-    <div className={styles.audioplayer_wrapper}>
-      <h1>Здесь должен быть плеер</h1>
-
-      <div
-        className={
-          isMusicStoped
-            ? styles.aurdioplayer_duration_wrapper
-            : styles.aurdioplayer_duration_wrapper +
-              ' ' +
-              styles.audioplayer_active
+  const activateButton = (e) => {
+    const buttonsArray = e.target.parentNode.querySelectorAll('span')
+    console.log(
+      buttonsArray.forEach((el) => {
+        if (el.classList.value.includes(styles.player_button_active)) {
+          el.classList.remove(styles.player_button_active)
         }
-      >
+      })
+    )
+    if (e.target.textContent !== 'СТОП') {
+      e.target.classList.add(styles.player_button_active)
+    }
+  }
+
+  return (
+    <div
+      className={
+        isMusicStoped
+          ? styles.audioplayer_wrapper
+          : styles.audioplayer_wrapper + ' ' + styles.audioplayer_active
+      }
+    >
+      <div className={styles.aurdioplayer_duration_wrapper}>
         <p>00:00:00</p>
         {duration !== 0 && <p>{timeConverted(curPose)}</p>}
         {duration !== 0 && <p>{playbackTime}</p>}
@@ -106,27 +116,30 @@ const AudioPlayer = ({ song }) => {
       <div className={styles.audioplayer_buttons_wrapper}>
         <span
           className={styles.audioplayer_buttons}
-          onClick={() => {
+          onClick={(e) => {
             letItPlay()
+            activateButton(e)
           }}
         >
-          PLAY
+          ПЛЕЙ
         </span>
         <span
           className={styles.audioplayer_buttons}
-          onClick={() => {
+          onClick={(e) => {
             letItPause()
+            activateButton(e)
           }}
         >
-          PAUSE
+          ПАУЗ
         </span>
         <span
           className={styles.audioplayer_buttons}
           onClick={(e) => {
             letItStop(e)
+            activateButton(e)
           }}
         >
-          STOP
+          СТОП
         </span>
       </div>
     </div>

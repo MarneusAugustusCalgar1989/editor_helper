@@ -52,8 +52,8 @@ const AudioConverter = (e) => {
         )
       }
       const blob = new Blob(chunks, { type: 'audio/webm; codecs=opus' })
+
       const converterdFile = URL.createObjectURL(blob)
-      console.log('All is ok')
       URL.revokeObjectURL(blob)
       setSoundUpload(converterdFile)
 
@@ -75,23 +75,26 @@ const AudioConverter = (e) => {
         <AnimatedPage>
           <h1 className="module_header">Аудиоконвертер</h1>
           {showModal && <ModalWindow progress={uploadProgress} />}
-          {soundUpload && (
+          {soundUpload && !showModal && (
             <>
-              <a
-                href={soundUpload}
-                download={audioName}
-                className="image_converter_result"
-              >
-                <AudioPlayer />
-              </a>
-              <button
-                onClick={() => {
-                  setSoundUpload()
-                  setShowInput(true)
-                }}
-              >
-                Попробовать еще раз
-              </button>
+              <AudioPlayer song={soundUpload} />
+
+              <div className="audioconverter_buttons_wrapper">
+                <div className="test_button">
+                  <a href={soundUpload} download={audioName}>
+                    Скачать
+                  </a>
+                </div>
+                <div
+                  className="test_button"
+                  onClick={() => {
+                    setSoundUpload()
+                    setShowInput(true)
+                  }}
+                >
+                  Попробовать еще раз
+                </div>
+              </div>
             </>
           )}
           {showInput && (
