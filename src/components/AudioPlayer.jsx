@@ -6,6 +6,7 @@ const AudioPlayer = ({ song }) => {
   const [playbackTime, setPlaybackTime] = useState('')
   const [playTarget, setPlayTarget] = useState(music)
   const [isMusicStoped, setMusicStoped] = useState(true)
+  const [curPose, setCurpose] = useState(0)
 
   const timeConverted = (duration) => {
     let hours = 0
@@ -73,6 +74,7 @@ const AudioPlayer = ({ song }) => {
 
   music.ontimeupdate = (e) => {
     setPlayTarget(e.target)
+    setCurpose(playTarget.currentTime)
   }
 
   return (
@@ -88,8 +90,8 @@ const AudioPlayer = ({ song }) => {
               styles.audioplayer_active
         }
       >
-        <p>00:00</p>
-        {duration !== 0 && <p>{timeConverted(playTarget.currentTime)}</p>}
+        <p>00:00:00</p>
+        {duration !== 0 && <p>{timeConverted(curPose)}</p>}
         {duration !== 0 && <p>{playbackTime}</p>}
       </div>
       <div
