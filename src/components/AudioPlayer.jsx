@@ -4,22 +4,74 @@ const AudioPlayer = ({ song }) => {
   const music = new Audio(song)
   const [duration, setDuration] = useState(0)
   const [playbackTime, setPlaybackTime] = useState('')
-  const [musicTime, setMusicTime] = useState(0)
   const [playTarget, setPlayTarget] = useState(music)
+  const [isMusicStoped, setMusicStoped] = useState(true)
 
-  const [played, setPlayed] = useState(false)
+  const timeConverted = (duration) => {
+    let hours = 0
+    let min = 0
+    let sec = 0
+
+    //Считаем часы
+    duration / 3600 > 1 && duration / 3600 < 10
+      ? (hours = `0${Math.floor(duration / 3600)}`)
+      : (hours = '00')
+    //Считаем минуты
+    min = Math.floor(duration / 60)
+    min < 10 ? (min = `0${min}`) : (min = `${min}`)
+    //Считаем секунды
+    sec = Math.floor(duration % 60)
+    sec < 10 ? (sec = `0${sec}`) : (sec = `${sec}`)
+    return `${hours}:${min}:${sec}`
+  }
 
   music.onloadedmetadata = () => {
     setDuration(music.duration)
+    setPlaybackTime(timeConverted(duration))
+  }
 
-    let sec = duration % 60
-    let hours = Math.floor(duration / 60 / 60)
-    let min = Math.floor(duration / 60) - hours * 60
-    setPlaybackTime(`${hours}:${min}:${Math.floor(sec / 60)}`)
+  const letItPlay = () => {
+    playTarget.play()
+    setMusicStoped(false)
+  }
+
+  const letItPause = () => {
+    playTarget.pause()
+  }
+
+  const letItStop = (e) => {
+    playTarget.pause()
+    playTarget.currentTime = 0
+    e.target.parentNode.parentNode.querySelector(
+      '.' + styles.audioplayer_playhead
+    ).style.left = '-1%'
+    e.target.parentNode.parentNode.querySelector(
+      '.' + styles.audioplayer_playroad
+    ).style.width = '0%'
+
+    setMusicStoped(true)
+  }
+
+  const setPlayerTime = (e) => {
+    let playRoadWidth = e.target.offsetWidth
+    let playRoadStart = e.target.offsetLeft
+    const playHead = e.target.querySelector('.' + styles.audioplayer_playhead)
+    const backPlay = e.target.querySelector('.' + styles.audioplayer_playroad)
+    const currentPosition = e.clientX - playRoadStart
+    const musicPosition =
+      (duration * ((currentPosition * 100) / playRoadWidth)) / 100
+
+    if (!isMusicStoped) {
+      playHead.style.left = `${currentPosition - playRoadWidth * 0.018}px`
+      backPlay.style.width = `${currentPosition}px`
+      playTarget.currentTime = musicPosition
+    } else {
+      playHead.style.left = `-1%`
+      backPlay.style.width = `0%`
+    }
   }
 
   music.ontimeupdate = (e) => {
-    setMusicTime(music.currentTime)
     setPlayTarget(e.target)
   }
 
@@ -27,12 +79,25 @@ const AudioPlayer = ({ song }) => {
     <div className={styles.audioplayer_wrapper}>
       <h1>Здесь должен быть плеер</h1>
 
-      <div className={styles.aurdioplayer_duration_wrapper}>
+      <div
+        className={
+          isMusicStoped
+            ? styles.aurdioplayer_duration_wrapper
+            : styles.aurdioplayer_duration_wrapper +
+              ' ' +
+              styles.audioplayer_active
+        }
+      >
         <p>00:00</p>
-        {duration !== 0 && <p>{Math.floor(musicTime)}</p>}
+        {duration !== 0 && <p>{timeConverted(playTarget.currentTime)}</p>}
         {duration !== 0 && <p>{playbackTime}</p>}
       </div>
-      <div className={styles.audioplayer_playback}>
+      <div
+        className={styles.audioplayer_playback}
+        onClick={(e) => {
+          setPlayerTime(e)
+        }}
+      >
         <div className={styles.audioplayer_playroad}></div>
         <div className={styles.audioplayer_playhead}></div>
       </div>
@@ -40,8 +105,7 @@ const AudioPlayer = ({ song }) => {
         <span
           className={styles.audioplayer_buttons}
           onClick={() => {
-            music.play()
-            setPlayed(true)
+            letItPlay()
           }}
         >
           PLAY
@@ -49,12 +113,18 @@ const AudioPlayer = ({ song }) => {
         <span
           className={styles.audioplayer_buttons}
           onClick={() => {
-            console.log('paused')
-            playTarget.pause()
-            setPlayed(false)
+            letItPause()
           }}
         >
           PAUSE
+        </span>
+        <span
+          className={styles.audioplayer_buttons}
+          onClick={(e) => {
+            letItStop(e)
+          }}
+        >
+          STOP
         </span>
       </div>
     </div>

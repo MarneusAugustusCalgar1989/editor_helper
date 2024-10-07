@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.audioplayer_active {
+  background-color: var(--accent_pink);
+}
+
 .audioplayer_buttons_wrapper {
   width: 100%;
   display: flex;
@@ -50,7 +54,8 @@
   background-color: var(--accent_purple);
   border-radius: 100%;
   top: -44%;
-  left: 9%;
+  left: -1%;
+  pointer-events: none;
 }
 
 .audioplayer_playroad {
@@ -58,6 +63,7 @@
   margin: 0;
   padding: 0;
   min-height: 1svh;
-  width: 10%;
+  width: 0%;
   background-color: var(--accent_pink);
+  pointer-events: none;
 }
