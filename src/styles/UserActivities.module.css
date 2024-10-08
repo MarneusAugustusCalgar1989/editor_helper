@@ -122,6 +122,11 @@
   }
 }
 
+.user_activity_main {
+  width: 80%;
+  max-width: 700px;
+}
+
 .tec_span {
   display: none;
 }

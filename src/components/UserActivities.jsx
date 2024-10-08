@@ -174,9 +174,7 @@ const UserActivities = ({ item, innerCB }) => {
   }`
 
   return (
-    <div>
-      {item.Default && <h1>Нечего показывать</h1>}
-
+    <div className={styles.user_activity_main}>
       {!item.Default && item.type && (
         <div className={styles.user_activities + ' ' + styles.document_maker}>
           <div className={styles.remove_button_wrapper}>
@@ -236,7 +234,11 @@ const UserActivities = ({ item, innerCB }) => {
               <ModalWindow progress={uploadProgress} />
             ) : (
               <a href={imageLoaded} download={item.requestText} target="blank">
-                <img src={imageLoaded} alt={item.requestText} />
+                <img
+                  src={imageLoaded}
+                  alt={item.requestText}
+                  title="Нажми, чтобы скачать"
+                />
               </a>
             )}
           </div>

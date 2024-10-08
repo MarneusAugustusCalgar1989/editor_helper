@@ -15,6 +15,8 @@ const AudioConverter = (e) => {
   const [uploadProgress, setUploadProgress] = useState()
   const [showModal, setShowModal] = useState(false)
 
+  const [voznya, setVoznya] = useState(false)
+
   const sendAudio = async (e) => {
     e.preventDefault()
     setShowInput(false)
@@ -43,8 +45,12 @@ const AudioConverter = (e) => {
       while (true) {
         const { done, value } = await reader.read()
         if (done) {
+          setVoznya(false)
+          setShowModal(false)
+
           break
         }
+        setVoznya(true)
         chunks.push(value)
         recievedLength += value.length
         setUploadProgress(
@@ -61,7 +67,6 @@ const AudioConverter = (e) => {
         method: 'POST',
         body: formData,
       })
-      setShowModal(false)
       setUploadProgress(0)
       return converterdFile
     } else {
@@ -74,6 +79,12 @@ const AudioConverter = (e) => {
       <Wrapper>
         <AnimatedPage>
           <h1 className="module_header">Аудиоконвертер</h1>
+          {showModal && !voznya && (
+            <p className="fun_word_block">аудиоконвертирует...</p>
+          )}
+          {showModal && voznya && (
+            <p className="fun_word_block">оооо, пошла жара!!!</p>
+          )}
           {showModal && <ModalWindow progress={uploadProgress} />}
           {soundUpload && !showModal && (
             <>
@@ -104,7 +115,6 @@ const AudioConverter = (e) => {
                 onClick={() => {
                   const input = document.querySelector('form').filename
                   input.click()
-                  // setInputHandle('input')
                 }}
               >
                 <h1>Загрузите аудио</h1>

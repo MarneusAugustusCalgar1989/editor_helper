@@ -345,6 +345,22 @@ footer {
   background: pink;
 }
 
+.request_recieved {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.document_result_button_wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .test_button {
   font-family: Colus;
   width: 45%;
@@ -362,10 +378,11 @@ footer {
   border-radius: 10px;
   color: var(--accent_purple);
   &:hover {
-    color: var(--accent_light);
+    color: var(--light_font);
     background-color: var(--transparent_purple);
   }
   &:active {
+    color: var(--main_bg);
     background-color: var(--accent_purple);
     -webkit-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
     -moz-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
@@ -385,6 +402,10 @@ footer {
 .module_header {
   font-family: Colus;
   color: var(--accent_purple);
+  margin-bottom: 2rem;
+}
+
+.fun_word_block {
   margin-bottom: 2rem;
 }
 
@@ -426,11 +447,17 @@ footer {
   justify-content: center;
   align-items: center;
 }
+
 .image_converter_result img {
   width: 60%;
 
   max-width: 1920px;
   min-width: 300px;
+  border: 2px solid transparent;
+  transition: border 0.5s ease-out;
+  &:hover {
+    border: 2px solid var(--accent_pink);
+  }
 }
 
 .modal_window {
@@ -501,16 +528,55 @@ footer {
 
 .activities_wrapper {
   margin-top: 2rem;
-  width: 60%;
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
 .user_activities_list {
-  width: 100%;
-  max-width: 500px;
+  width: 60%;
+  max-width: 1920px;
+}
+.test_block {
+  color: red;
 }
 
 /*FILETER SORTER*/
 
 .filter_sorter {
   width: 100%;
-  border: 1px solid red;
+  border-bottom: 1px solid var(--transparent_purple);
+}
+.filter_sorter_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter_sorter_buttons_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.filter_buttons,
+.sorter_buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.active_filter {
+  color: var(--main_bg);
+  background-color: var(--accent_purple);
+  -webkit-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  -moz-box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
+  box-shadow: inset 3px 5px 5px 0px rgba(121, 117, 255, 0.2);
 }
