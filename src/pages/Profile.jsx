@@ -1,40 +1,40 @@
-import { useEffect, useState } from 'react'
-import UserActivities from '../components/UserActivities'
-import Wrapper from '../components/Wrapper'
-import { useAuth } from '../hooks/useAuth'
-import FilterSorter from '../components/FilterSorter'
+import { useEffect, useState } from 'react';
+import UserActivities from '../components/UserActivities';
+import Wrapper from '../components/Wrapper';
+import { useAuth } from '../hooks/useAuth';
+import FilterSorter from '../components/FilterSorter';
 
 const Profile = () => {
-  const context = useAuth()
-  const [userData, setUserData] = useState([])
-  const [showData, setShowData] = useState([])
-  const [filters, setFilters] = useState([])
-  const [filtered, setFiltered] = useState([])
+  const context = useAuth();
+  const [userData, setUserData] = useState([]);
+  const [showData, setShowData] = useState([]);
+  const [filters, setFilters] = useState([]);
+  const [filtered, setFiltered] = useState([]);
 
-  const innerCB = (el) => {
+  const innerCB = el => {
     return setUserData(
-      userData.filter((e) => {
-        return e.requestText !== el
+      userData.filter(e => {
+        return e.requestText !== el;
       })
-    )
-  }
+    );
+  };
 
-  const filterActivities = (filterBy) => {
+  const filterActivities = filterBy => {
     filters.includes(filterBy)
-      ? setFilters([...filters].filter((el) => el !== filterBy))
-      : setFilters([...filters, filterBy])
+      ? setFilters([...filters].filter(el => el !== filterBy))
+      : setFilters([...filters, filterBy]);
 
-    userData.forEach((el) => {
-      filters.forEach((f) => {
+    userData.forEach(el => {
+      filters.forEach(f => {
         if (el[f]) {
-          setFiltered([...userData].filter((el) => el === el[f]))
+          setFiltered([...userData].filter(el => el === el[f]));
         }
-      })
-    })
-  }
-  const sorter = (type) => {
-    console.log(type + 'sorter from profile page')
-  }
+      });
+    });
+  };
+  const sorter = type => {
+    console.log(type + 'sorter from profile page');
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -46,31 +46,32 @@ const Profile = () => {
           },
           body: JSON.stringify(context),
         })
-          .then((data) => data.json())
-          .then((data) => {
-            setUserData(data.flat())
-            setFiltered(data.flat())
-          })
+          .then(data => data.json())
+          .then(data => {
+            setUserData(data.flat());
+            setFiltered(data.flat());
+            context.setServiceON(true);
+          });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       } finally {
       }
-    }
-    fetchUserData()
-  }, [context])
+    };
+    fetchUserData();
+  }, [context.serviceON]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Wrapper>
         <p>{filters}</p>
         <div
-          className="activities_wrapper"
+          className='activities_wrapper'
           onClick={() => {
-            context.refreshState()
+            context.refreshState();
           }}
         >
           {!userData[0]?.Default && userData.length !== 0 && (
-            <div className="filter_sorter">
+            <div className='filter_sorter'>
               <FilterSorter filter={filterActivities} sorter={sorter} />
             </div>
           )}
@@ -78,28 +79,28 @@ const Profile = () => {
           {userData[0]?.Default && <h1>Нет активностей</h1>}
           {userData[0] !== 'Default' &&
             !filtered.length &&
-            userData.map((el) => (
+            userData.map(el => (
               <UserActivities
                 item={el}
                 key={el.timeStamp}
                 innerCB={innerCB}
-                className="user_activities_list"
+                className='user_activities_list'
               />
             ))}
           {!userData[0]?.Default &&
             filtered.length &&
-            filtered.map((el) => (
+            filtered.map(el => (
               <UserActivities
                 item={el}
                 key={el.timeStamp}
                 innerCB={innerCB}
-                className="user_activities_list test_block"
+                className='user_activities_list test_block'
               />
             ))}
         </div>
       </Wrapper>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

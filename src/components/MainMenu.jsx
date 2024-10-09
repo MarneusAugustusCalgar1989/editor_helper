@@ -9,7 +9,7 @@ const MainMenu = ({ children }) => {
     context.item = '';
   }
 
-  const [serviceON, setServiceOn] = useState(false);
+  const [serviceON, setServiceOn] = useState();
 
   useEffect(() => {
     const testFetch = async () => {
@@ -17,7 +17,14 @@ const MainMenu = ({ children }) => {
         await fetch('http://213.59.156.172:3000/', {
           method: 'POST',
           body: context?.user || 'default-token',
-        }).then(data => (data ? setServiceOn(true) : setServiceOn(false)));
+        }).then(data => {
+          if (data) {
+            setServiceOn(true);
+            context.setServiceON(true);
+          } else {
+            setServiceOn(false);
+          }
+        });
       } catch (e) {
         console.log(e.text);
       } finally {
@@ -26,7 +33,7 @@ const MainMenu = ({ children }) => {
     };
 
     testFetch();
-  }, [context.user]);
+  }, [context.user, context.serviceON]);
 
   return (
     <AnimatedPage>

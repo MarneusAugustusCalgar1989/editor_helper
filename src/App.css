@@ -10,7 +10,10 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: #fff;
+}
+.App:has(header) {
+  justify-content: space-between;
 }
