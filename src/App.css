@@ -17,3 +17,7 @@
 .App:has(header) {
   justify-content: space-between;
 }
+
+.App:has(.filter_sorter) {
+  margin-top: 0.6rem;
+}
