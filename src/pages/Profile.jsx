@@ -10,7 +10,7 @@ const Profile = () => {
   const [showData, setShowData] = useState([]);
   const [filters, setFilters] = useState([]);
   const [filtered, setFiltered] = useState([]);
-
+  console.log(filters.length);
   const innerCB = el => {
     return setUserData(
       userData.filter(e => {
@@ -20,17 +20,13 @@ const Profile = () => {
   };
 
   const filterActivities = filterBy => {
-    filters.includes(filterBy)
-      ? setFilters([...filters].filter(el => el !== filterBy))
-      : setFilters([...filters, filterBy]);
-
-    userData.forEach(el => {
-      filters.forEach(f => {
-        if (el[f]) {
-          setFiltered([...userData].filter(el => el === el[f]));
-        }
-      });
-    });
+    if (filters.includes(filterBy)) {
+      return setFilters([...filters].filter(el => el !== filterBy));
+    } else if (filters.length === 0) {
+      return setFilters([filterBy]);
+    } else {
+      return setFilters([...filters, filterBy]);
+    }
   };
   const sorter = type => {
     console.log(type + 'sorter from profile page');
@@ -49,8 +45,7 @@ const Profile = () => {
           .then(data => data.json())
           .then(data => {
             setUserData(data.flat());
-            setFiltered(data.flat());
-            context.setServiceON(true);
+            context.userData = userData;
           });
       } catch (e) {
         console.log(e);
@@ -58,7 +53,7 @@ const Profile = () => {
       }
     };
     fetchUserData();
-  }, [context.serviceON]);
+  }, [context]);
 
   return (
     <div className='App'>
@@ -77,26 +72,15 @@ const Profile = () => {
           )}
           {userData.length === 0 && <h1>Загрузка</h1>}
           {userData[0]?.Default && <h1>Нет активностей</h1>}
-          {userData[0] !== 'Default' &&
-            !filtered.length &&
-            userData.map(el => (
+          {!userData[0]?.Default &&
+            userData.map(el => {
               <UserActivities
                 item={el}
                 key={el.timeStamp}
                 innerCB={innerCB}
                 className='user_activities_list'
-              />
-            ))}
-          {!userData[0]?.Default &&
-            filtered.length &&
-            filtered.map(el => (
-              <UserActivities
-                item={el}
-                key={el.timeStamp}
-                innerCB={innerCB}
-                className='user_activities_list test_block'
-              />
-            ))}
+              />;
+            })}
         </div>
       </Wrapper>
     </div>
