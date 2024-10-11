@@ -4,9 +4,7 @@ import { useEffect } from 'react';
 
 const Wrapper = ({ children }) => {
   const context = useAuth();
-  useEffect(() => {
-    console.log(context);
-  }, [context.serviceON]);
+  useEffect(() => {}, [context.serviceON]);
 
   return (
     <>

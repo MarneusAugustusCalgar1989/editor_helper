@@ -3,7 +3,7 @@ import { useState } from 'react';
 const FilterSorter = ({ filter, sorter }) => {
   return (
     <div className='filter_sorter_wrapper'>
-      <h1>Фильтрация и сортировка</h1>
+      {/* <h1>Фильтрация и сортировка</h1> */}
       <div className='filter_sorter_buttons_wrapper'>
         <div className='filter_buttons'>
           <div
@@ -39,7 +39,22 @@ const FilterSorter = ({ filter, sorter }) => {
         </div>
       </div>
       <div className='sorter_buttons'>
-        <div className='test_button'>Сортировать по времени</div>
+        <div
+          className='test_button'
+          onClick={() => {
+            sorter('newer');
+          }}
+        >
+          Сначала новые
+        </div>
+        <div
+          className='test_button'
+          onClick={() => {
+            sorter('older');
+          }}
+        >
+          Сначала старые
+        </div>
       </div>
     </div>
   );

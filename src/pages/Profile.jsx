@@ -7,10 +7,9 @@ import FilterSorter from '../components/FilterSorter';
 const Profile = () => {
   const context = useAuth();
   const [userData, setUserData] = useState([]);
-  const [showData, setShowData] = useState([]);
   const [filters, setFilters] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  console.log(filters.length);
+  const [sorters, setSorters] = useState('newer');
+
   const innerCB = el => {
     return setUserData(
       userData.filter(e => {
@@ -19,6 +18,10 @@ const Profile = () => {
     );
   };
 
+  if (userData) {
+    userData.forEach(el => (el.dateStamp = new Date(el.timeStamp)));
+  }
+  console.log(userData);
   const filterActivities = filterBy => {
     if (filters.includes(filterBy)) {
       return setFilters([...filters].filter(el => el !== filterBy));
@@ -28,8 +31,13 @@ const Profile = () => {
       return setFilters([...filters, filterBy]);
     }
   };
+
   const sorter = type => {
-    console.log(type + 'sorter from profile page');
+    if (type === 'newer') {
+      return setSorters('newer');
+    } else if (type === 'older') {
+      return setSorters('older');
+    }
   };
 
   useEffect(() => {
@@ -45,7 +53,6 @@ const Profile = () => {
           .then(data => data.json())
           .then(data => {
             setUserData(data.flat());
-            context.userData = userData;
           });
       } catch (e) {
         console.log(e);
@@ -58,13 +65,7 @@ const Profile = () => {
   return (
     <div className='App'>
       <Wrapper>
-        <p>{filters}</p>
-        <div
-          className='activities_wrapper'
-          onClick={() => {
-            context.refreshState();
-          }}
-        >
+        <div className='activities_wrapper'>
           {!userData[0]?.Default && userData.length !== 0 && (
             <div className='filter_sorter'>
               <FilterSorter filter={filterActivities} sorter={sorter} />
@@ -73,14 +74,49 @@ const Profile = () => {
           {userData.length === 0 && <h1>Загрузка</h1>}
           {userData[0]?.Default && <h1>Нет активностей</h1>}
           {!userData[0]?.Default &&
-            userData.map(el => {
-              <UserActivities
-                item={el}
-                key={el.timeStamp}
-                innerCB={innerCB}
-                className='user_activities_list'
-              />;
-            })}
+            filters.length !== 0 &&
+            userData
+              .filter(el => {
+                for (let f in filters) {
+                  if (el[filters[f]]) {
+                    return el;
+                  }
+                }
+                return;
+              })
+              .sort((a, b) => {
+                if (sorters === 'newer') {
+                  return b.dateStamp - a.dateStamp;
+                } else if (sorters === 'older') {
+                  return a.dateStamp - b.dateStamp;
+                }
+              })
+              .map(el => (
+                <UserActivities
+                  item={el}
+                  key={el.timeStamp}
+                  innerCB={innerCB}
+                  className='user_activities_list'
+                />
+              ))}
+          {!userData[0]?.Default &&
+            filters.length === 0 &&
+            userData
+              .sort((a, b) => {
+                if (sorters === 'newer') {
+                  return b.dateStamp - a.dateStamp;
+                } else if (sorters === 'older') {
+                  return a.dateStamp - b.dateStamp;
+                }
+              })
+              .map(el => (
+                <UserActivities
+                  item={el}
+                  key={el.timeStamp}
+                  innerCB={innerCB}
+                  className='user_activities_list'
+                />
+              ))}
         </div>
       </Wrapper>
     </div>

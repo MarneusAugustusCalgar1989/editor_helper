@@ -81,7 +81,7 @@ export default function DocumentEditor() {
     };
 
     testFetch();
-  }, [context.user, context.serviceON]);
+  }, [context]);
 
   const initEditorState = {
     type: '', // Тип запроса, он же заголовок
@@ -422,6 +422,7 @@ export default function DocumentEditor() {
           )}
           {!reqeustConfirmed && (
             <div className='form_container'>
+              <h1 className='module_header'>Документодел</h1>
               <div className='for_who'>
                 <label htmlFor='adress'>
                   <p>Кому:</p>
