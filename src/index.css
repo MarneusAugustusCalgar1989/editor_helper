@@ -554,23 +554,16 @@ footer {
   }
 }
 
-@media (max-width: 400px) {
-  .main_header_top,
-  .main_header_bottom {
-    font-size: 3rem;
-  }
-  .top_container:hover .container:nth-child(1) {
-    transform: translateY(-2rem);
-  }
-
+@media (hover: none) and (pointer: coarse) {
   .container {
-    height: 5svh;
+    height: 7svh;
+    margin: 0;
   }
   .main_header_top {
-    margin-top: 1.2svh;
+    margin-top: -1svh;
   }
   .main_header_bottom {
-    margin-top: -4svh;
+    margin-top: -8svh;
   }
 
   .menu_list ul {
@@ -587,15 +580,94 @@ footer {
   }
 
   .top_container:hover .container:nth-child(1) {
-    transform: translateY(-0.01svh);
-    height: 3svh;
+    transform: translateY(-1svh);
+    height: 4svh;
   }
 
   .top_container:hover .container:nth-child(3) {
-    transform: translateY(-0.1svh);
+    transform: translateY(0.6svh);
   }
 
   .top_container:hover .container:nth-child(3) * {
-    margin-top: -3svh;
+    margin-top: -9svh;
+  }
+}
+
+@media (max-width: 400px) {
+  .main_header_top,
+  .main_header_bottom {
+    font-size: 3rem;
+  }
+  .top_container:hover .container:nth-child(1) {
+    transform: translateY(-2rem);
+  }
+
+  .container {
+    height: 5svh;
+  }
+  .main_header_top {
+    margin-top: 1.3svh;
+  }
+  .main_header_bottom {
+    margin-top: -3.7svh;
+  }
+
+  .menu_list ul {
+    padding: 0;
+    margin: 0;
+    height: 2.5svh;
+  }
+  .menu_list ul li {
+    font-size: 0.5rem;
+  }
+
+  .top_container:hover .menu_list {
+    display: block;
+  }
+
+  .top_container:hover .container:nth-child(1) {
+    transform: translateY(-1svh);
+    height: 4svh;
+  }
+
+  .top_container:hover .container:nth-child(3) {
+    transform: translateY(svh);
+  }
+
+  .top_container:hover .container:nth-child(3) * {
+    margin-top: -4svh;
+  }
+
+  header {
+    font-size: 0.4rem;
+  }
+  .filter_sorter_buttons_wrapper {
+    width: 100%;
+  }
+  .filter_buttons {
+    width: 100%;
+  }
+  .sorter_buttons {
+    margin-bottom: 0.5rem;
+  }
+  .test_button {
+    font-size: 0.4rem;
+    padding: 0.4rem;
+    margin: 0.1rem;
+  }
+  footer {
+    font-size: 0.4rem;
+  }
+}
+
+@media (max-width: 400px) and (pointer: coarse) {
+  .top_container:hover .menu_list {
+    min-width: 33.3%;
+  }
+  .module_header {
+    font-size: 0.7rem;
+  }
+  .image_loader_wrapper {
+    font-size: 0.7rem;
   }
 }

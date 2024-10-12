@@ -1,46 +1,46 @@
-import { NavLink } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { useEffect } from 'react'
 
 const Wrapper = ({ children }) => {
-  const context = useAuth();
-  useEffect(() => {}, [context.serviceON]);
+  const context = useAuth()
+  useEffect(() => {}, [context.serviceON])
 
   return (
     <>
       {context.serviceON && (
-        <header onLoad={e => console.log('loaded')}>
-          <div className='header_logo'>
-            <NavLink to='/'>HOME</NavLink>
+        <header onLoad={(e) => console.log('loaded')}>
+          <div className="header_logo">
+            <NavLink to="/">вспомогатор</NavLink>
           </div>
 
-          <div className='header_auth'>
+          <div className="header_auth">
             {!context.user ? (
               <>
-                <div className='header_sign_in'>
-                  <NavLink to='/signup'>Sign in</NavLink>
+                <div className="header_sign_in">
+                  <NavLink to="/signup">Рега</NavLink>
                 </div>
-                <div className='header_log_in'>
-                  <NavLink to='/login'>Log in</NavLink>
+                <div className="header_log_in">
+                  <NavLink to="/login">Логинь</NavLink>
                 </div>
               </>
             ) : (
               <>
-                <div className='header_sign_in'>
+                <div className="header_sign_in">
                   <NavLink
-                    to='/login'
+                    to="/login"
                     onClick={() => {
-                      context.user = '';
-                      context.username = '';
-                      localStorage.removeItem('x-token');
-                      localStorage.removeItem('username');
+                      context.user = ''
+                      context.username = ''
+                      localStorage.removeItem('x-token')
+                      localStorage.removeItem('username')
                     }}
                   >
-                    Log Out
+                    Выйти
                   </NavLink>
                 </div>
-                <div className='header_sign_in'>
-                  <NavLink to='/profile'>{context.username}</NavLink>
+                <div className="header_sign_in">
+                  <NavLink to="/profile">{context.username}</NavLink>
                 </div>
               </>
             )}
@@ -50,11 +50,11 @@ const Wrapper = ({ children }) => {
       {children}
       {context.serviceON && (
         <footer>
-          <p>{context?.username || 'some footer'}</p>
+          <p>{context?.username || 'Добро пожаловать! '}</p>
         </footer>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Wrapper;
+export default Wrapper

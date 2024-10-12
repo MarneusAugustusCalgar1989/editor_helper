@@ -92,14 +92,12 @@ const SignUpWindow = () => {
                     error={item.validate?.(formState)}
                   />
                 ))}
-                {showSendButton && (
-                  <button className="form_button">Registration</button>
-                )}
+                {showSendButton && <button className="test_button">го!</button>}
               </form>
             </div>
           ) : (
             <h1 className={styles.module_second_header}>
-              You are logged in as{' '}
+              Ты залогинен как{' '}
               <span
                 style={{ color: 'var(--accent_purple)', cursor: 'pointer' }}
                 onClick={() => {

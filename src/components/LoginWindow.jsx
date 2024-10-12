@@ -90,7 +90,7 @@ const LoginWindow = () => {
                     {...item}
                   />
                 ))}
-                <button className="form_button">Log In</button>
+                <button className="test_button">Войти</button>
               </form>
             ) : (
               <h1 className={styles.module_second_header}>

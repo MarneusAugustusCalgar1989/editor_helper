@@ -311,3 +311,38 @@ h2 {
   border: 1px solid var(--accent_purple);
   color: var(--accent_purple);
 }
+
+@media (max-width: 500px) {
+  .form_container * {
+    font-size: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .main-container {
+    margin-bottom: 1rem;
+  }
+
+  .variant_chooser li {
+    width: 50%;
+    font-size: 0.5rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  .entity_selector {
+    margin-bottom: 0;
+  }
+
+  .entity_subselector {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.5rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  .module_header {
+    margin-bottom: 1rem;
+  }
+}

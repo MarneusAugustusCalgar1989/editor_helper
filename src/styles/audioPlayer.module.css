@@ -14,7 +14,7 @@
 
 .aurdioplayer_duration_wrapper {
   width: 100%;
-  padding: 2rem 2rem 0rem 2rem;
+  padding: 2rem 0rem 0rem 0rem;
   margin-bottom: 0.7rem;
   display: flex;
   flex-direction: row;
@@ -42,6 +42,7 @@
 
 .audioplayer_buttons {
   margin: 1rem;
+  width: 25%;
   padding: 0.5rem;
   cursor: pointer;
   background-color: var(--accent_light);
@@ -106,4 +107,31 @@
   color: var(--accent_purple);
   opacity: 1;
   box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .aurdioplayer_duration_wrapper {
+    font-size: 0.5rem;
+  }
+  .audioplayer_buttons_wrapper {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .audioplayer_wrapper {
+    margin: 0;
+    padding: 0;
+  }
+
+  .aurdioplayer_duration_wrapper p {
+    font-size: 0.1rem;
+  }
+  .audioplayer_playhead {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  .audioplayer_playback {
+    height: 1px;
+  }
 }

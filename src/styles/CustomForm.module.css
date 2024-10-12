@@ -30,7 +30,7 @@ button {
 }
 
 .input_container input {
-  margin: 1rem 0 1rem 0;
+  margin-bottom: 1rem;
 
   &[data-error='true'] + .input_error {
     display: block;

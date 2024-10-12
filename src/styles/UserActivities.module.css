@@ -130,3 +130,31 @@
 .tec_span {
   display: none;
 }
+
+@media (max-width: 400px) {
+  .user_activity_main {
+    width: 100%;
+  }
+  .user_activities {
+    width: 100%;
+    margin: 0.1rem;
+    min-height: auto;
+  }
+  .remove_button_wrapper p {
+    font-size: 0.4rem;
+  }
+
+  .ua_header_wrapper {
+    font-size: 0.4rem;
+  }
+  .request_container {
+    margin-bottom: 0.5rem;
+  }
+  .request_container p {
+    font-size: 0.4rem;
+  }
+  .user_activities_button {
+    margin: 0;
+    font-size: 0.4rem;
+  }
+}
