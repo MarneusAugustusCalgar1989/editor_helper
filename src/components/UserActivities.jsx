@@ -1,164 +1,165 @@
-import styles from '../styles/UserActivities.module.css';
-import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import ModalWindow from './ModalWindow';
-import AudioPlayer from './AudioPlayer';
+import styles from '../styles/UserActivities.module.css'
+import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import ModalWindow from './ModalWindow'
+import AudioPlayer from './AudioPlayer'
+import envirConfig from './envir_config/envirConfig'
 
 const UserActivities = ({ item, innerCB }) => {
-  const context = useAuth();
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState('');
-  const [imageLoaded, setImgLoaded] = useState('');
-  const [audioLoaded, setAudioLoaded] = useState('');
+  const context = useAuth()
+  const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState('')
+  const [imageLoaded, setImgLoaded] = useState('')
+  const [audioLoaded, setAudioLoaded] = useState('')
 
   const getConvertedImage = async () => {
-    setShowModal(true);
+    setShowModal(true)
     const response = await fetch(
-      'http://213.59.156.172:3000/converted_images/' + item.requestText,
+      envirConfig.serverURL + '/converted_images/' + item.requestText,
       {
         method: 'GET',
         headers: { 'Content-Type': 'image/jpg', user: context.user },
       }
-    );
+    )
 
     if (response.ok) {
-      const reader = response.body.getReader();
-      const contentLength = +response.headers.get('Content-Length');
-      let recievedLength = 0;
-      let chunks = [];
+      const reader = response.body.getReader()
+      const contentLength = +response.headers.get('Content-Length')
+      let recievedLength = 0
+      let chunks = []
 
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await reader.read()
         if (done) {
-          break;
+          break
         }
-        chunks.push(value);
-        recievedLength += value.length;
+        chunks.push(value)
+        recievedLength += value.length
         setUploadProgress(
           `${Math.floor((recievedLength * 100) / contentLength)}%`
-        );
+        )
       }
-      const blob = new Blob(chunks);
-      const imgSrc = URL.createObjectURL(blob);
-      setShowModal(false);
-      setUploadProgress(0);
+      const blob = new Blob(chunks)
+      const imgSrc = URL.createObjectURL(blob)
+      setShowModal(false)
+      setUploadProgress(0)
 
-      URL.revokeObjectURL(blob);
+      URL.revokeObjectURL(blob)
 
-      setImgLoaded(imgSrc);
+      setImgLoaded(imgSrc)
     }
-  };
+  }
 
   const getConvertedAudio = async () => {
-    setShowModal(true);
+    setShowModal(true)
     const response = await fetch(
-      'http://213.59.156.172:3000/converted_sounds/' + item.requestText,
+      envirConfig.serverURL + '/converted_sounds/' + item.requestText,
       {
         method: 'GET',
         headers: { 'Content-Type': 'image/jpg', user: context.user },
       }
-    );
+    )
 
     if (response.ok) {
-      const reader = response.body.getReader();
-      const contentLength = +response.headers.get('Content-Length');
-      let recievedLength = 0;
-      let chunks = [];
+      const reader = response.body.getReader()
+      const contentLength = +response.headers.get('Content-Length')
+      let recievedLength = 0
+      let chunks = []
 
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await reader.read()
         if (done) {
-          break;
+          break
         }
-        chunks.push(value);
-        recievedLength += value.length;
+        chunks.push(value)
+        recievedLength += value.length
         setUploadProgress(
           `${Math.floor((recievedLength * 100) / contentLength)}%`
-        );
+        )
       }
-      const blob = new Blob(chunks);
-      const imgSrc = URL.createObjectURL(blob);
-      setShowModal(false);
-      setUploadProgress(0);
+      const blob = new Blob(chunks)
+      const imgSrc = URL.createObjectURL(blob)
+      setShowModal(false)
+      setUploadProgress(0)
 
-      URL.revokeObjectURL(blob);
+      URL.revokeObjectURL(blob)
 
-      setAudioLoaded(imgSrc);
+      setAudioLoaded(imgSrc)
     }
-  };
+  }
   useEffect(() => {
     if (item.logotype_image) {
-      getConvertedImage();
+      getConvertedImage()
     }
     if (item.convert_audio) {
-      getConvertedAudio();
+      getConvertedAudio()
     }
-  }, [item]);
+  }, [item])
 
-  const createInnerHtml = item => {
-    return { __html: item };
-  };
+  const createInnerHtml = (item) => {
+    return { __html: item }
+  }
 
-  const removeActivity = async e => {
-    context.index = item.requestText;
+  const removeActivity = async (e) => {
+    context.index = item.requestText
 
-    await fetch('http://213.59.156.172:3000/remove_activity', {
+    await fetch(envirConfig.serverURL + '/remove_activity', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(context),
     })
-      .then(data => data.json())
-      .then(data => {
-        innerCB(item.requestText);
+      .then((data) => data.json())
+      .then((data) => {
+        innerCB(item.requestText)
         if (data[0][0].Default) {
-          navigate('/');
+          navigate('/')
         }
-      });
-  };
+      })
+  }
 
-  const postDate = new Date(item.timeStamp);
+  const postDate = new Date(item.timeStamp)
 
-  let month = '';
+  let month = ''
 
   if (postDate.getMonth() === 0) {
-    month = 'Января';
+    month = 'Января'
   }
   if (postDate.getMonth() === 1) {
-    month = 'Февраля';
+    month = 'Февраля'
   }
   if (postDate.getMonth() === 2) {
-    month = 'Марта';
+    month = 'Марта'
   }
   if (postDate.getMonth() === 3) {
-    month = 'Апреля';
+    month = 'Апреля'
   }
   if (postDate.getMonth() === 4) {
-    month = 'Мая';
+    month = 'Мая'
   }
   if (postDate.getMonth() === 5) {
-    month = 'Июня';
+    month = 'Июня'
   }
   if (postDate.getMonth() === 6) {
-    month = 'Июля';
+    month = 'Июля'
   }
   if (postDate.getMonth() === 7) {
-    month = 'Августа';
+    month = 'Августа'
   }
   if (postDate.getMonth() === 8) {
-    month = 'Сентября';
+    month = 'Сентября'
   }
   if (postDate.getMonth() === 9) {
-    month = 'Октября';
+    month = 'Октября'
   }
   if (postDate.getMonth() === 10) {
-    month = 'Ноября';
+    month = 'Ноября'
   }
   if (postDate.getMonth() === 11) {
-    month = 'Декабря';
+    month = 'Декабря'
   }
 
   let postTime = `${postDate.getDate()} ${month} ${postDate.getFullYear()}. ${
@@ -171,7 +172,7 @@ const UserActivities = ({ item, innerCB }) => {
     postDate.getSeconds() > 9
       ? postDate.getSeconds()
       : '0' + postDate.getSeconds()
-  }`;
+  }`
 
   return (
     <div className={styles.user_activity_main}>
@@ -181,7 +182,7 @@ const UserActivities = ({ item, innerCB }) => {
             <p>{postTime + ' '}</p>
             <span
               className={styles.remove_button}
-              onClick={e => removeActivity(e)}
+              onClick={(e) => removeActivity(e)}
             >
               &times;
             </span>
@@ -202,8 +203,8 @@ const UserActivities = ({ item, innerCB }) => {
             <div
               className={styles.user_activities_button}
               onClick={() => {
-                context.item = item;
-                navigate('/documentcreator');
+                context.item = item
+                navigate('/documentcreator')
               }}
             >
               <p>Повторить</p>
@@ -220,7 +221,7 @@ const UserActivities = ({ item, innerCB }) => {
 
             <span
               className={styles.remove_button}
-              onClick={e => removeActivity(e)}
+              onClick={(e) => removeActivity(e)}
             >
               &times;
             </span>
@@ -233,11 +234,11 @@ const UserActivities = ({ item, innerCB }) => {
             {showModal ? (
               <ModalWindow progress={uploadProgress} />
             ) : (
-              <a href={imageLoaded} download={item.requestText} target='blank'>
+              <a href={imageLoaded} download={item.requestText} target="blank">
                 <img
                   src={imageLoaded}
                   alt={item.requestText}
-                  title='Нажми, чтобы скачать'
+                  title="Нажми, чтобы скачать"
                 />
               </a>
             )}
@@ -252,7 +253,7 @@ const UserActivities = ({ item, innerCB }) => {
 
             <span
               className={styles.remove_button}
-              onClick={e => removeActivity(e)}
+              onClick={(e) => removeActivity(e)}
             >
               &times;
             </span>
@@ -283,7 +284,7 @@ const UserActivities = ({ item, innerCB }) => {
                           ?.split(')_', 2)[1]
                           .split('_converted', 2)[0]
                       }
-                      target='blank'
+                      target="blank"
                     >
                       <p>Скачать</p>
                     </a>
@@ -295,7 +296,7 @@ const UserActivities = ({ item, innerCB }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default UserActivities;
+export default UserActivities

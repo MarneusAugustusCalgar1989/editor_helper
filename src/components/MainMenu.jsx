@@ -1,48 +1,49 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import AnimatedPage from './AnimatedPage';
-import { useAuth } from '../hooks/useAuth';
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import AnimatedPage from './AnimatedPage'
+import { useAuth } from '../hooks/useAuth'
+import envirConfig from './envir_config/envirConfig'
 
 const MainMenu = ({ children }) => {
-  const context = useAuth();
+  const context = useAuth()
   if (context.item) {
-    context.item = '';
+    context.item = ''
   }
 
-  const [serviceON, setServiceOn] = useState();
+  const [serviceON, setServiceOn] = useState()
 
   useEffect(() => {
     const testFetch = async () => {
       try {
-        await fetch('http://213.59.156.172:3000/', {
+        await fetch(envirConfig.serverURL, {
           method: 'POST',
           body: context?.user || 'default-token',
-        }).then(data => {
+        }).then((data) => {
           if (data) {
-            setServiceOn(true);
-            context.setServiceON(true);
+            setServiceOn(true)
+            context.setServiceON(true)
           } else {
-            setServiceOn(false);
+            setServiceOn(false)
           }
-        });
+        })
       } catch (e) {
-        console.log(e.text);
+        console.log(e.text)
       } finally {
-        console.log('Fetched');
+        console.log('Fetched')
       }
-    };
+    }
 
-    testFetch();
-  }, [context.user, context.serviceON]);
+    testFetch()
+  }, [context.user, context.serviceON])
 
   return (
     <AnimatedPage>
       <main>
-        <div className='top_container'>
-          <div className='container'>
-            <h1 className='main_header_top'>ВСПОМОГАТОР</h1>
+        <div className="top_container">
+          <div className="container">
+            <h1 className="main_header_top">ВСПОМОГАТОР</h1>
           </div>
-          <div className='menu_list'>
+          <div className="menu_list">
             {!serviceON && (
               <ul>
                 <li onClick={() => window.location.reload()}>
@@ -54,7 +55,7 @@ const MainMenu = ({ children }) => {
             {serviceON && !context.user && (
               <ul>
                 <li>
-                  <Link to='login'>Нужно зарегистрироваться</Link>
+                  <Link to="login">Нужно зарегистрироваться</Link>
                 </li>
               </ul>
             )}
@@ -62,25 +63,25 @@ const MainMenu = ({ children }) => {
             {serviceON && context.user && (
               <ul>
                 <li>
-                  <Link to='logotyper'>Логотипер</Link>
+                  <Link to="logotyper">Логотипер</Link>
                 </li>
                 <li>
-                  <Link to='audioconverter'>Звукодел</Link>
+                  <Link to="audioconverter">Звукодел</Link>
                 </li>
 
                 <li>
-                  <Link to='documentcreator'>Документодел</Link>
+                  <Link to="documentcreator">Документодел</Link>
                 </li>
               </ul>
             )}
           </div>
-          <div className='container'>
-            <h1 className='main_header_bottom'>ВСПОМОГАТОР</h1>
+          <div className="container">
+            <h1 className="main_header_bottom">ВСПОМОГАТОР</h1>
           </div>
         </div>
       </main>
     </AnimatedPage>
-  );
-};
+  )
+}
 
-export default MainMenu;
+export default MainMenu

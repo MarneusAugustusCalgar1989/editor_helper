@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from '../styles/LoginWindow.module.css'
 import Wrapper from './Wrapper'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,8 @@ import { useAuth } from '../hooks/useAuth'
 import AnimatedPage from './AnimatedPage'
 import CustomForm from './form/CustomForm'
 import { loginFormConfig, loginInitState } from './form/formConfig'
+import testFetch from './hoc/testFetch'
+import envirConfig from './envir_config/envirConfig'
 
 const LoginWindow = () => {
   const navigate = useNavigate()
@@ -19,6 +21,9 @@ const LoginWindow = () => {
   const [formState, setFormState] = useState(loginInitState)
 
   const context = useAuth()
+  useEffect(() => {
+    testFetch(context.setServiceON, context)
+  }, [context.user, context.serviceON, context])
 
   const formChange = (e) => {
     const value = e.target.value
@@ -38,7 +43,7 @@ const LoginWindow = () => {
     formState.password = ''
 
     try {
-      await fetch('http://213.59.156.172:3000/authorisate', {
+      await fetch(envirConfig.serverURL + '/authorisate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),

@@ -1,10 +1,9 @@
-import AnimatedPage from '../components/AnimatedPage';
-import Wrapper from '../components/Wrapper';
+import AnimatedPage from '../components/AnimatedPage'
+import Wrapper from '../components/Wrapper'
 
-import { useState, useEffect, useRef } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { useAuth } from '../hooks/useAuth';
-
+import { useState, useEffect, useRef } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import { useAuth } from '../hooks/useAuth'
 import {
   ClassicEditor,
   AccessibilityHelp,
@@ -47,41 +46,46 @@ import {
   TableToolbar,
   TextTransformation,
   Undo,
-} from 'ckeditor5';
+} from 'ckeditor5'
 
-import 'ckeditor5/ckeditor5.css';
+import 'ckeditor5/ckeditor5.css'
 
-import '../styles/documentEditor.css';
+import '../styles/documentEditor.css'
+import testFetch from './hoc/testFetch'
+import envirConfig from './envir_config/envirConfig'
 
 export default function DocumentEditor() {
-  const editorContainerRef = useRef(null);
-  const editorRef = useRef(null);
-  const ckeref = useRef(null);
-  const [isLayoutReady, setIsLayoutReady] = useState(false);
-  const context = useAuth();
+  const editorContainerRef = useRef(null)
+  const editorRef = useRef(null)
+  const ckeref = useRef(null)
+  const [isLayoutReady, setIsLayoutReady] = useState(false)
+  const context = useAuth()
+  useEffect(() => {
+    testFetch(context.setServiceON, context)
+  }, [context.user, context.serviceON, context])
 
   useEffect(() => {
     const testFetch = async () => {
       try {
-        await fetch('http://213.59.156.172:3000/', {
+        await fetch(envirConfig.serverURL, {
           method: 'POST',
           body: context?.user || 'default-token',
-        }).then(data => {
+        }).then((data) => {
           if (data) {
-            context.setServiceON(true);
+            context.setServiceON(true)
           } else {
-            context.setServiceON(false);
+            context.setServiceON(false)
           }
-        });
+        })
       } catch (e) {
-        console.log(e.text);
+        console.log(e.text)
       } finally {
-        console.log('Fetched');
+        console.log('Fetched')
       }
-    };
+    }
 
-    testFetch();
-  }, [context]);
+    testFetch()
+  }, [context])
 
   const initEditorState = {
     type: '', // Тип запроса, он же заголовок
@@ -93,20 +97,20 @@ export default function DocumentEditor() {
     user: context.user, // токен
     username: context.username, //имя пользователя
     timeStamp: new Date(),
-  };
+  }
 
-  const [editorState, setEditorState] = useState(initEditorState);
+  const [editorState, setEditorState] = useState(initEditorState)
 
-  const [reqeustConfirmed, setRequestConfirmed] = useState(false);
+  const [reqeustConfirmed, setRequestConfirmed] = useState(false)
 
   useEffect(() => {
-    setIsLayoutReady(true);
+    setIsLayoutReady(true)
     if (context.item) {
-      setEditorState(context.item);
+      setEditorState(context.item)
     }
 
-    return () => setIsLayoutReady(false);
-  }, [context.item]);
+    return () => setIsLayoutReady(false)
+  }, [context.item])
 
   const editorConfig = {
     toolbar: {
@@ -276,143 +280,143 @@ export default function DocumentEditor() {
         'tableCellProperties',
       ],
     },
-  };
+  }
 
-  const changeEditor = e => {
+  const changeEditor = (e) => {
     setEditorState({
       ...editorState,
       requestText: ckeref.current.watchdog._editor.data.get(),
-    });
-  };
+    })
+  }
 
-  const setRequestType = e => {
+  const setRequestType = (e) => {
     setEditorState({
       ...editorState,
       [e.target.dataset.name]: e.target.textContent,
-    });
+    })
     document
       .querySelector('.variant_chooser')
       .querySelectorAll('li')
-      .forEach(el => {
+      .forEach((el) => {
         if (el.classList.value.includes('active_chose')) {
-          el.classList.remove('active_chose');
+          el.classList.remove('active_chose')
         }
-      });
-    e.target.classList.add('active_chose');
-  };
+      })
+    e.target.classList.add('active_chose')
+  }
 
-  const setEntityType = e => {
+  const setEntityType = (e) => {
     setEditorState({
       ...editorState,
       [e.target.dataset.name]: e.target.textContent,
-    });
+    })
 
     document
       .querySelector('.entity_subselector')
       .querySelectorAll('li')
-      .forEach(el => {
+      .forEach((el) => {
         if (el.classList.value.includes('active_chose')) {
-          el.classList.remove('active_chose');
+          el.classList.remove('active_chose')
         }
-      });
-    e.target.classList.add('active_chose');
-  };
+      })
+    e.target.classList.add('active_chose')
+  }
 
-  const setRegal = e => {
+  const setRegal = (e) => {
     if (e.target.textContent === 'Подпись') {
-      setEditorState({ ...editorState, sign: !editorState.sign });
+      setEditorState({ ...editorState, sign: !editorState.sign })
     } else if (e.target.textContent === 'Подпись и печать') {
-      setEditorState({ ...editorState, stamp: !editorState.stamp });
+      setEditorState({ ...editorState, stamp: !editorState.stamp })
     } else {
-      alert('Что-то пошло не так!');
+      alert('Что-то пошло не так!')
     }
 
-    e.target.classList.toggle('active_chose');
-  };
+    e.target.classList.toggle('active_chose')
+  }
 
-  const freeFromInput = e => {
-    setEditorState({ ...editorState, [e.target.name]: e.target.value });
-    document.querySelectorAll('li').forEach(el => {
+  const freeFromInput = (e) => {
+    setEditorState({ ...editorState, [e.target.name]: e.target.value })
+    document.querySelectorAll('li').forEach((el) => {
       if (el.classList.value.includes('active_chose')) {
-        el.classList.remove('active_chose');
+        el.classList.remove('active_chose')
       }
-    });
-  };
+    })
+  }
 
-  const inputFocused = e => {
+  const inputFocused = (e) => {
     e.target.value !== ''
       ? setEditorState({ ...editorState, type: e.target.value })
-      : setEditorState(editorState);
-  };
+      : setEditorState(editorState)
+  }
 
-  const sendEditorForm = async e => {
-    console.log(editorState);
+  const sendEditorForm = async (e) => {
+    console.log(editorState)
     try {
-      await fetch('http://213.59.156.172:3000/send_document_data', {
+      await fetch(envirConfig.serverURL + '/send_document_data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editorState),
-      }).then(data =>
+      }).then((data) =>
         data.ok ? setRequestConfirmed(true) : setRequestConfirmed(false)
-      );
+      )
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      console.log('Data was sended');
+      console.log('Data was sended')
     }
-  };
+  }
 
   const getDocument = async () => {
-    console.log('Trying to catch the file');
+    console.log('Trying to catch the file')
 
     try {
-      await fetch('http://213.59.156.172:3000/download', {
+      await fetch(envirConfig.serverURL + '/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: context.username,
           user: context.user,
         }),
-      }).then(data =>
-        data?.blob().then(blob => {
-          const fileUrl = window.URL.createObjectURL(blob);
-          let alink = document.createElement('a');
-          alink.href = fileUrl;
-          alink.download = editorState.type + ' ' + editorState.adress;
-          alink.click();
+      }).then((data) =>
+        data?.blob().then((blob) => {
+          const fileUrl = window.URL.createObjectURL(blob)
+          let alink = document.createElement('a')
+          alink.href = fileUrl
+          alink.download = editorState.type + ' ' + editorState.adress
+          alink.click()
         })
-      );
+      )
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      console.log('Document was catched');
+      console.log('Document was catched')
     }
-  };
+  }
 
   return (
-    <div className='App'>
+    <div className="App">
       <Wrapper>
         <AnimatedPage>
           {reqeustConfirmed && (
-            <div className='request_recieved'>
+            <div className="request_recieved">
               <h1>Запрос получен</h1>
-              <div className='document_result_button_wrapper'>
+              <div className="document_result_button_wrapper">
                 <div
-                  className='test_button'
-                  onClick={e => {
-                    setRequestConfirmed(false);
-                    setEditorState(initEditorState);
-                    getDocument(e);
+                  className="test_button"
+                  onClick={(e) => {
+                    setRequestConfirmed(false)
+                    setEditorState(initEditorState)
+                    getDocument(e)
                   }}
                 >
                   Скачать запрос
                 </div>
 
                 <div
-                  className='test_button'
+                  className="test_button"
                   onClick={() => {
-                    setRequestConfirmed(false);
-                    setEditorState(initEditorState);
+                    setRequestConfirmed(false)
+                    setEditorState(initEditorState)
                   }}
                 >
                   Другой запрос?
@@ -421,27 +425,27 @@ export default function DocumentEditor() {
             </div>
           )}
           {!reqeustConfirmed && (
-            <div className='form_container'>
-              <h1 className='module_header'>Документодел</h1>
-              <div className='for_who'>
-                <label htmlFor='adress'>
+            <div className="form_container">
+              <h1 className="module_header">Документодел</h1>
+              <div className="for_who">
+                <label htmlFor="adress">
                   <p>Кому:</p>
                 </label>
                 <input
-                  type='text'
-                  name='adress'
+                  type="text"
+                  name="adress"
                   placeholder={context.username + ', укажи, кому шлем'}
-                  onChange={e => freeFromInput(e)}
-                  onFocus={e => inputFocused(e)}
+                  onChange={(e) => freeFromInput(e)}
+                  onFocus={(e) => inputFocused(e)}
                   value={editorState.adress}
                 />
               </div>
-              <div className='variant_chooser'>
+              <div className="variant_chooser">
                 <ul>
                   <li
-                    data-name='type'
-                    onClick={e => {
-                      setRequestType(e);
+                    data-name="type"
+                    onClick={(e) => {
+                      setRequestType(e)
                     }}
                     className={
                       editorState.type === 'Запрос информации'
@@ -452,9 +456,9 @@ export default function DocumentEditor() {
                     Запрос информации
                   </li>
                   <li
-                    data-name='type'
-                    onClick={e => {
-                      setRequestType(e);
+                    data-name="type"
+                    onClick={(e) => {
+                      setRequestType(e)
                     }}
                     className={
                       editorState.type === 'Письмо поддержки'
@@ -466,16 +470,16 @@ export default function DocumentEditor() {
                   </li>
                 </ul>
               </div>
-              <div className='free_form_input'>
-                <label htmlFor='type'>
+              <div className="free_form_input">
+                <label htmlFor="type">
                   <p>Собственный запрос: </p>
                 </label>
                 <input
-                  type='text'
-                  name='type'
+                  type="text"
+                  name="type"
                   placeholder={context.username + ', укажи свой заголовок'}
-                  onChange={e => freeFromInput(e)}
-                  onFocus={e => inputFocused(e)}
+                  onChange={(e) => freeFromInput(e)}
+                  onFocus={(e) => inputFocused(e)}
                   value={
                     editorState.type !== 'Письмо поддержки' &&
                     editorState.type !== 'Запрос информации'
@@ -484,12 +488,12 @@ export default function DocumentEditor() {
                   }
                 />
               </div>
-              <div className='main-container'>
+              <div className="main-container">
                 <div
-                  className='editor-container editor-container_classic-editor'
+                  className="editor-container editor-container_classic-editor"
                   ref={editorContainerRef}
                 >
-                  <div className='editor-container__editor'>
+                  <div className="editor-container__editor">
                     <div ref={editorRef}>
                       {isLayoutReady && !reqeustConfirmed && (
                         <>
@@ -505,13 +509,13 @@ export default function DocumentEditor() {
                   </div>
                 </div>
               </div>
-              <div className='entity_selector'>
+              <div className="entity_selector">
                 <p>Выберите сущность: </p>
-                <ul className='entity_subselector'>
-                  <div className='obzor'>
+                <ul className="entity_subselector">
+                  <div className="obzor">
                     <li
-                      data-name='fromWho'
-                      onClick={e => setEntityType(e)}
+                      data-name="fromWho"
+                      onClick={(e) => setEntityType(e)}
                       className={
                         editorState.fromWho === 'Томский Обзор'
                           ? 'active_chose'
@@ -521,10 +525,10 @@ export default function DocumentEditor() {
                       Томский Обзор
                     </li>
                   </div>
-                  <div className='makushin'>
+                  <div className="makushin">
                     <li
-                      data-name='fromWho'
-                      onClick={e => setEntityType(e)}
+                      data-name="fromWho"
+                      onClick={(e) => setEntityType(e)}
                       className={
                         editorState.fromWho === 'Макушин медиа'
                           ? 'active_chose'
@@ -536,12 +540,12 @@ export default function DocumentEditor() {
                   </div>
                 </ul>
               </div>
-              <div className='sign_stamp_selector'>
+              <div className="sign_stamp_selector">
                 <p>Определите регалии:</p>
-                <ul className='sign_stamp_subselector'>
+                <ul className="sign_stamp_subselector">
                   <li
                     className={editorState.sign ? 'sign active_chose' : 'sign'}
-                    onClick={e => setRegal(e)}
+                    onClick={(e) => setRegal(e)}
                   >
                     Подпись
                   </li>
@@ -549,7 +553,7 @@ export default function DocumentEditor() {
                     className={
                       editorState.stamp ? 'stamp active_chose' : 'stamp'
                     }
-                    onClick={e => setRegal(e)}
+                    onClick={(e) => setRegal(e)}
                   >
                     Подпись и печать
                   </li>
@@ -559,11 +563,11 @@ export default function DocumentEditor() {
                 editorState.type !== '' &&
                 editorState.adress !== '' && (
                   <div
-                    className='test_button'
+                    className="test_button"
                     onClick={() => {
-                      setEditorState({ ...editorState, timeStamp: Date.now() });
+                      setEditorState({ ...editorState, timeStamp: Date.now() })
 
-                      sendEditorForm();
+                      sendEditorForm()
                     }}
                   >
                     Отправить запрос
@@ -574,5 +578,5 @@ export default function DocumentEditor() {
         </AnimatedPage>
       </Wrapper>
     </div>
-  );
+  )
 }

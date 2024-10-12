@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+import envirConfig from './envir_config/envirConfig'
 
 const UsersList = () => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
     const getUsers = async () => {
-      const resp = await fetch('http://213.59.156.172:3000/get_users', {
+      const resp = await fetch(envirConfig.serverURL + '/get_users', {
         method: 'GET',
       })
       let usersArr = await resp.json()
