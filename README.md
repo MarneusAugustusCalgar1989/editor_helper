@@ -13,7 +13,8 @@
 В проекте реализована простая самописная система регистрации и авторизации. Есть личный кабинет. 
 
 ## ЛОГОТИПЕР
-![ДОКУМЕНТОДЕЛ](https://obzor.city/data/images/news_2024/zgl1/gittest/document_creator.jpg)
+<img src = 'https://obzor.city/data/images/news_2024/zgl1/gittest/document_creator.jpg'/>
+
 Логотипер берет иизображения (пока только jpg) и накладывает на них логотип. Строго в правый нижний угол. 
 
 ## ЗВУКОДЕЛ
